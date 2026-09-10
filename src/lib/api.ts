@@ -135,5 +135,19 @@ export const api = {
       const { error } = await supabase.from('bs_people').delete().eq('id', id);
       if (error) throw error;
     }
+  },
+  settings: {
+    async get() {
+      const { data, error } = await supabase.from('bs_settings').select('data').eq('id', 'global').single();
+      if (error && error.code !== 'PGRST116') throw error;
+      return data?.data || null;
+    },
+    async update(settingsData: any) {
+      const { data, error } = await supabase.from('bs_settings')
+        .upsert({ id: 'global', data: settingsData })
+        .select().single();
+      if (error) throw error;
+      return data?.data || settingsData;
+    }
   }
 };

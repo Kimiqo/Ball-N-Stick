@@ -110,6 +110,7 @@ import type { GalleryCollection, BSEvent } from '../admin/AdminContext';
 export default function Home() {
   const [gallery, setGallery] = useState<GalleryCollection[]>([]);
   const [events, setEvents] = useState<BSEvent[]>([]);
+  const [heroImage, setHeroImage] = useState('https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=1080&fit=crop&auto=format');
 
   // Parallax setups
   const { scrollY } = useScroll();
@@ -119,6 +120,9 @@ export default function Home() {
   useEffect(() => {
     api.gallery.list().then(setGallery).catch(console.error);
     api.events.list().then(setEvents).catch(console.error);
+    api.settings.get().then(s => {
+      if (s?.hero_image_url) setHeroImage(s.hero_image_url);
+    }).catch(console.error);
   }, []);
 
   return (
@@ -131,7 +135,7 @@ export default function Home() {
       {/* ── 1. HERO ── */}
       <section className="relative h-screen min-h-[620px] flex flex-col justify-end overflow-hidden">
         <motion.img
-          src="https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=1080&fit=crop&auto=format"
+          src={heroImage}
           alt="Field hockey in action"
           className="absolute inset-0 w-full h-[120%] object-cover object-center top-[-10%]"
           style={{ y: heroY }}

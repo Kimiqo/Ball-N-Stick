@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Server, Globe, Mail, Phone, MapPin } from 'lucide-react';
+import { Check, Server, Globe, Mail, Phone, MapPin, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
+import { api, uploadImage } from '../lib/api';
 
 type SiteSettings = {
   tagline: string;
@@ -14,6 +15,7 @@ type SiteSettings = {
   addressPostal: string;
   website: string;
   ceoName: string;
+  hero_image_url?: string;
 };
 
 const DEFAULTS: SiteSettings = {
@@ -30,36 +32,57 @@ const DEFAULTS: SiteSettings = {
   ceoName: 'Kojo Lumour Ameye',
 };
 
-function load(): SiteSettings {
-  try {
-    const stored = localStorage.getItem('bs_settings');
-    return stored ? { ...DEFAULTS, ...JSON.parse(stored) } : DEFAULTS;
-  } catch {
-    return DEFAULTS;
-  }
-}
-
 export default function AdminSettings() {
-  const [settings, setSettings] = useState<SiteSettings>(load);
+  const [settings, setSettings] = useState<SiteSettings>(DEFAULTS);
+  const [loading, setLoading] = useState(true);
+  const [uploadingHero, setUploadingHero] = useState(false);
   const [toast, setToast] = useState('');
 
   const flash = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
+  useEffect(() => {
+    api.settings.get().then(data => {
+      if (data) setSettings({ ...DEFAULTS, ...data });
+      setLoading(false);
+    }).catch(err => {
+      console.error(err);
+      setLoading(false);
+    });
+  }, []);
+
   const update = (patch: Partial<SiteSettings>) => setSettings(s => ({ ...s, ...patch }));
 
-  const save = () => {
-    localStorage.setItem('bs_settings', JSON.stringify(settings));
-    flash('Settings saved');
+  const save = async () => {
+    try {
+      await api.settings.update(settings);
+      flash('Settings saved');
+    } catch (e) {
+      flash('Error saving settings');
+    }
+  };
+
+  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHero(true);
+    const url = await uploadImage(file);
+    if (url) {
+      update({ hero_image_url: url });
+      flash('Hero image uploaded');
+    }
+    setUploadingHero(false);
   };
 
   const input = "w-full bg-white/[0.03] border border-white/[0.08] text-[#F5F7FA] placeholder-[#F5F7FA]/15 text-sm px-3 py-2.5 outline-none focus:border-[#D71920]/40 transition-colors";
+
+  if (loading) return <div className="text-white">Loading settings...</div>;
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-display font-black uppercase text-[#F5F7FA] text-2xl leading-none">Settings</h1>
-          <p className="text-[#F5F7FA]/25 text-xs mt-1">Site configuration and contact information</p>
+          <p className="text-[#F5F7FA]/25 text-xs mt-1">Site configuration and global variables</p>
         </div>
         <div className="flex items-center gap-4">
           <AnimatePresence>
@@ -76,27 +99,6 @@ export default function AdminSettings() {
           >
             Save Settings
           </button>
-        </div>
-      </div>
-
-      {/* CMS integration status */}
-      <div className="bg-[#071A3D] border border-white/[0.06] p-5 mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <Server size={13} className="text-[#F5F7FA]/30" />
-          <span className="label text-[#F5F7FA]/30" style={{ fontSize: '0.6rem' }}>CMS Integration Status</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {[
-            { label: 'Payload CMS', status: 'Not connected', note: 'Recommended backend' },
-            { label: 'Cloudinary', status: 'Not connected', note: 'Media storage' },
-            { label: 'Live API', status: 'Prototype mode', note: 'Using localStorage' },
-          ].map(item => (
-            <div key={item.label} className="bg-white/[0.02] border border-white/[0.05] px-4 py-3">
-              <div className="font-medium text-[#F5F7FA]/55 text-xs mb-1">{item.label}</div>
-              <div className="label text-[#F5F7FA]/25" style={{ fontSize: '0.58rem' }}>{item.status}</div>
-              <div className="label text-[#F5F7FA]/15 mt-1" style={{ fontSize: '0.55rem' }}>{item.note}</div>
-            </div>
-          ))}
         </div>
       </div>
 
@@ -123,6 +125,38 @@ export default function AdminSettings() {
             <div>
               <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Website</label>
               <input className={input} value={settings.website} onChange={e => update({ website: e.target.value })} />
+            </div>
+          </div>
+        </section>
+
+        {/* Global Media */}
+        <section>
+          <div className="flex items-center gap-2 mb-5">
+            <ImageIcon size={13} className="text-[#D71920]" />
+            <div className="label text-[#F5F7FA]/40" style={{ fontSize: '0.62rem' }}>Global Media</div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Homepage Hero Image</label>
+              <div className="flex items-start gap-4">
+                <div className="relative aspect-video w-40 bg-[#071A3D] border border-white/10 shrink-0 overflow-hidden">
+                  {settings.hero_image_url ? (
+                    <img src={settings.hero_image_url} alt="Hero preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-[#F5F7FA]/20 text-xs text-center p-2">No image uploaded</div>
+                  )}
+                </div>
+                <div>
+                  <p className="text-xs text-[#F5F7FA]/40 mb-3 leading-relaxed">
+                    This image will be displayed prominently at the top of the homepage. For best results, upload a high-resolution landscape image (16:9).
+                  </p>
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-xs text-[#F5F7FA] transition-colors rounded-sm border border-white/10">
+                    {uploadingHero ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                    {uploadingHero ? 'Uploading...' : 'Upload New Image'}
+                    <input type="file" className="hidden" accept="image/*" onChange={handleHeroUpload} disabled={uploadingHero} />
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -162,12 +196,12 @@ export default function AdminSettings() {
         </section>
 
         {/* Address */}
-        <section className="lg:col-span-2">
+        <section>
           <div className="flex items-center gap-2 mb-5">
             <MapPin size={13} className="text-[#D71920]" />
             <div className="label text-[#F5F7FA]/40" style={{ fontSize: '0.62rem' }}>Physical Address</div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Street Address</label>
               <input className={input} value={settings.addressStreet} onChange={e => update({ addressStreet: e.target.value })} />
