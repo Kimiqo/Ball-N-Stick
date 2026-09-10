@@ -50,6 +50,20 @@ export default function Events() {
     return <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-white">Loading...</div>;
   }
 
+  if (events.length === 0) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+        <section className="pt-32 md:pt-44 pb-16 min-h-[60vh] flex items-center justify-center text-center">
+          <div className="max-w-md mx-auto px-5">
+            <div className="label text-[#D71920] mb-4">Events</div>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] text-4xl mb-4">Coming Soon</h1>
+            <p className="text-[#F5F7FA]/45 text-sm">We are currently planning our next exciting events. Check back later!</p>
+          </div>
+        </section>
+      </motion.div>
+    );
+  }
+
   const featured = events.find(e => e.featured) || events[0];
   const rest = events.filter(e => e !== featured);
 
