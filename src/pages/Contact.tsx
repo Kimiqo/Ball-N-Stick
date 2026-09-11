@@ -34,11 +34,34 @@ export default function Contact() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1200);
+
+    try {
+      // Replace this URL with your actual Formspree endpoint, or use an environment variable
+      const formspreeUrl = import.meta.env.VITE_FORMSPREE_URL || 'https://formspree.io/f/YOUR_FORM_ID';
+      
+      const response = await fetch(formspreeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(form)
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert("Oops! There was a problem submitting your form.");
+      }
+    } catch (error) {
+      alert("Oops! There was a problem submitting your form.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputClass = (field: keyof FormState) =>
@@ -62,7 +85,7 @@ export default function Contact() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Contact</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               Get in
               <br /><span className="text-outline">Touch</span>
             </h1>

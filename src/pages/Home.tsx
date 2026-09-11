@@ -21,7 +21,7 @@ function Stat({ value, suffix, label }: { value: number; suffix: string; label: 
   }, [inView, value]);
   return (
     <div ref={ref}>
-      <div className="font-display font-black text-[#F5F7FA] leading-none" style={{ fontSize: 'clamp(3rem, 5.5vw, 5.5rem)' }}>
+      <div className="font-display font-black text-[#F5F7FA] leading-none" style={{ fontSize: 'clamp(2rem, 5.5vw, 5.5rem)' }}>
         {count}{suffix}
       </div>
       <div className="label text-[#F5F7FA]/35 mt-2">{label}</div>
@@ -163,7 +163,7 @@ export default function Home() {
               speed={50}
               repeat={Infinity}
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]"
-              style={{ fontSize: 'clamp(3.5rem, 8vw, 8.5rem)', whiteSpace: 'pre-line' }}
+              style={{ fontSize: 'clamp(2.2rem, 8vw, 8.5rem)', whiteSpace: 'pre-line' }}
             />
           </div>
 
@@ -364,7 +364,7 @@ export default function Home() {
                     <div className="label text-[#D71920] text-[0.58rem]">{gallery[0].category}</div>
                   </FloatCard>
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', whiteSpace: 'pre-line' }}>
+                    <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.3rem, 3vw, 2.8rem)', whiteSpace: 'pre-line' }}>
                       {gallery[0].name}
                     </h3>
                     <div className="mt-3 label text-[#D71920] flex items-center gap-1.5">Browse <ArrowRight size={11} /></div>
@@ -403,7 +403,7 @@ export default function Home() {
             <Reveal>
               <div>
                 <div className="label text-[#D71920] mb-3">Events</div>
-                <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(2.5rem, 5vw, 5.5rem)' }}>
+                <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 5vw, 5.5rem)' }}>
                   On the<br /><span className="text-outline">Calendar</span>
                 </h2>
               </div>
@@ -509,7 +509,7 @@ export default function Home() {
             <div className="label text-[#D71920] mb-5">Join the Movement</div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mx-auto" style={{ fontSize: 'clamp(3.5rem, 8vw, 9.5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mx-auto" style={{ fontSize: 'clamp(2.2rem, 8vw, 9.5rem)' }}>
               Get Involved.
             </h2>
           </Reveal>

@@ -81,7 +81,7 @@ export default function WhatWeDo() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">What We Do</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-4xl" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-4xl" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               Five Arms,
               <br /><span className="text-outline">Eight Services</span>
             </h1>
@@ -142,7 +142,7 @@ export default function WhatWeDo() {
               <Reveal delay={0.1}>
                 <div className={i % 2 !== 0 ? '[direction:ltr]' : ''}>
                   <div className="label text-[#D71920] mb-3">{arm.code}</div>
-                  <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-5" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>
+                  <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-5" style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}>
                     {arm.title}
                   </h2>
                   <p className="text-[#F5F7FA]/55 text-sm leading-relaxed mb-7">{arm.desc}</p>
@@ -164,7 +164,7 @@ export default function WhatWeDo() {
       <section className="py-24 bg-[#071A3D] text-center border-t border-white/[0.05]">
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mb-8" style={{ fontSize: 'clamp(2.5rem, 6vw, 7rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mb-8" style={{ fontSize: 'clamp(1.8rem, 6vw, 7rem)' }}>
               Want to be part of this?
             </h2>
           </Reveal>

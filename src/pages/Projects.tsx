@@ -78,7 +78,7 @@ export default function Projects() {
             <div className="label text-[#D71920] mb-4">Our Work</div>
             <h1
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]"
-              style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}
+              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}
             >
               Projects &amp;
               <br />
@@ -111,7 +111,7 @@ export default function Projects() {
                 </div>
                 <h2
                   className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] max-w-2xl"
-                  style={{ fontSize: 'clamp(2.5rem, 5vw, 5.5rem)' }}
+                  style={{ fontSize: 'clamp(1.8rem, 5vw, 5.5rem)' }}
                 >
                   {PROJECTS[0].title}
                 </h2>
@@ -151,7 +151,7 @@ export default function Projects() {
                   </div>
                   <h3
                     className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]"
-                    style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)' }}
+                    style={{ fontSize: 'clamp(1.1rem, 2.5vw, 2rem)' }}
                   >
                     {p.title}
                   </h3>
@@ -170,7 +170,7 @@ export default function Projects() {
               <div className="label text-[#D71920] mb-3">Get Involved</div>
               <h2
                 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]"
-                style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}
+                style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}
               >
                 Want to support our work?
               </h2>

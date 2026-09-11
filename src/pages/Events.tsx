@@ -83,7 +83,7 @@ export default function Events() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Events</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               On the
               <br /><span className="text-outline">Calendar</span>
             </h1>
@@ -116,7 +116,7 @@ export default function Events() {
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                 <div>
                   <div className="label text-[#D71920] mb-3">B&S Event — Signature Programme</div>
-                  <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.88]" style={{ fontSize: 'clamp(2.2rem, 4.5vw, 5rem)' }}>
+                  <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.88]" style={{ fontSize: 'clamp(1.6rem, 4.5vw, 5rem)' }}>
                     {featured.title}
                   </h2>
                 </div>
@@ -182,7 +182,7 @@ export default function Events() {
           <Reveal>
             <div>
               <div className="label text-[#D71920] mb-2">Event Archive</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
+              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.3rem, 3.5vw, 3.5rem)' }}>
                 See the Gallery for event photo collections.
               </h2>
             </div>

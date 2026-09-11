@@ -57,7 +57,7 @@ export default function People() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Our People</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               The Team
               <br /><span className="text-outline">Behind the Mission</span>
             </h1>
@@ -82,7 +82,7 @@ export default function People() {
           <Reveal delay={0.1}>
             <div>
               <div className="label text-[#D71920] mb-3">{ceo?.role || "Founder & CEO"}</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-2" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>
+              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-2" style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}>
                 {ceo?.name || "Kojo Lumour Ameye"}
               </h2>
               {ceo?.email && (

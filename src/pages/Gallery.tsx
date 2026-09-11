@@ -73,7 +73,7 @@ export default function Gallery() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Gallery</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               The Archive
               <br /><span className="text-outline">of Hockey</span>
             </h1>

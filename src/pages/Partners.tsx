@@ -62,7 +62,7 @@ export default function Partners() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Partners</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
               Together
               <br /><span className="text-outline">We Grow</span>
             </h1>
@@ -99,7 +99,7 @@ export default function Partners() {
                   </div>
                 )}
                 <div className="label text-[#D71920] mb-2">{p.type}</div>
-                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)' }}>
+                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.3rem, 3vw, 2.8rem)' }}>
                   {p.name}
                 </h3>
                 <p className="text-[#F5F7FA]/50 text-sm leading-relaxed">{p.description}</p>
@@ -114,7 +114,7 @@ export default function Partners() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="label text-[#D71920] mb-4">Partnership Opportunities</div>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)' }}>
               How to Partner
               <br />With Us
             </h2>
@@ -129,7 +129,7 @@ export default function Partners() {
                 viewport={{ once: true }}
                 transition={{ delay: (i % 2) * 0.1, duration: 0.5 }}
               >
-                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)' }}>
+                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.2rem, 2.5vw, 2.2rem)' }}>
                   {pt.title}
                 </h3>
                 <p className="text-[#F5F7FA]/45 text-sm leading-relaxed">{pt.desc}</p>
@@ -146,7 +146,7 @@ export default function Partners() {
           <Reveal>
             <div>
               <div className="label text-[#D71920] mb-4">Partner With Ball &amp; Stick</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(2.5rem, 4.5vw, 5rem)' }}>
+              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 4.5vw, 5rem)' }}>
                 Let&apos;s Build Ghanaian Hockey Together
               </h2>
             </div>

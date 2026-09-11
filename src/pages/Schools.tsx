@@ -63,7 +63,7 @@ export default function Schools() {
             <div className="label text-[#D71920] mb-4">School Network</div>
             <h1
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl"
-              style={{ fontSize: 'clamp(3.5rem, 7.5vw, 9rem)' }}
+              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}
             >
               Partner
               <br />
@@ -157,7 +157,7 @@ export default function Schools() {
               <div className="label text-[#D71920] mb-3">Is your school not listed?</div>
               <h2
                 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]"
-                style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}
+                style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}
               >
                 Join the Network
               </h2>

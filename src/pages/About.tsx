@@ -82,7 +82,7 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">About</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl" style={{ fontSize: 'clamp(3.5rem, 7vw, 8rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl" style={{ fontSize: 'clamp(2.2rem, 7vw, 8rem)' }}>
               Who We
               <br /><span className="text-outline">Are</span>
             </h1>
@@ -118,7 +118,7 @@ export default function About() {
           <Reveal>
             <div>
               <div className="label text-[#D71920] mb-4">Our Story</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>
+              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}>
                 Built on a Passion for Excellence
               </h2>
             </div>
@@ -142,7 +142,7 @@ export default function About() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="label text-[#D71920] mb-4">Core Values</div>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)' }}>
               What Drives Us
             </h2>
           </Reveal>
@@ -157,7 +157,7 @@ export default function About() {
                 transition={{ delay: i * 0.1, duration: 0.55 }}
               >
                 <div className="font-display font-bold text-[#D71920] text-[0.7rem] tracking-[0.2em] mb-4">0{i + 1}</div>
-                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(2rem, 3vw, 2.8rem)' }}>
+                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.8rem)' }}>
                   {v.title}
                 </h3>
                 <p className="text-[#F5F7FA]/45 text-sm leading-relaxed">{v.desc}</p>
@@ -173,7 +173,7 @@ export default function About() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="label text-[#D71920] mb-4">Strategy</div>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)' }}>
               Key Strengths
             </h2>
           </Reveal>
@@ -202,7 +202,7 @@ export default function About() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="label text-[#D71920] mb-4">Organisation</div>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)' }}>
               Org Structure
             </h2>
           </Reveal>
@@ -236,7 +236,7 @@ export default function About() {
       <section className="py-16 bg-[#071A3D] border-t border-white/[0.05]">
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <Reveal>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)' }}>
               Want to know more?
             </h2>
           </Reveal>

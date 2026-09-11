@@ -64,7 +64,7 @@ export default function AdminLogin() {
         <div className="relative">
           <div
             className="font-display font-black uppercase text-[#F5F7FA]/8 leading-[0.82]"
-            style={{ fontSize: 'clamp(4rem, 9vw, 9rem)' }}
+            style={{ fontSize: 'clamp(2.5rem, 9vw, 9rem)' }}
           >
             Action
             <br />

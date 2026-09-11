@@ -78,7 +78,7 @@ export default function GetInvolved() {
             <div className="label text-[#D71920] mb-4">Join the Movement</div>
             <h1
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-4xl"
-              style={{ fontSize: 'clamp(3.5rem, 8vw, 10rem)' }}
+              style={{ fontSize: 'clamp(2.2rem, 8vw, 10rem)' }}
             >
               Get
               <br />
@@ -114,7 +114,7 @@ export default function GetInvolved() {
                   </div>
                   <h2
                     className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4"
-                    style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)' }}
+                    style={{ fontSize: 'clamp(1.5rem, 3.5vw, 3.5rem)' }}
                   >
                     {path.tagline}
                   </h2>
@@ -154,7 +154,7 @@ export default function GetInvolved() {
           <Reveal delay={0.1}>
             <h2
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mb-6"
-              style={{ fontSize: 'clamp(2.5rem, 5vw, 6rem)' }}
+              style={{ fontSize: 'clamp(1.8rem, 5vw, 6rem)' }}
             >
               We&apos;d love to hear from you.
             </h2>

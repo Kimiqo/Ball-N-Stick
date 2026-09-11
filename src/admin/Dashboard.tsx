@@ -72,7 +72,7 @@ export default function Dashboard() {
         <div className="label text-[#D71920] mb-2" style={{ fontSize: '0.62rem' }}>
           {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
         </div>
-        <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-none" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}>
+        <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-none" style={{ fontSize: 'clamp(1.3rem, 3vw, 2.5rem)' }}>
           Welcome back, {firstName}
         </h1>
       </div>
