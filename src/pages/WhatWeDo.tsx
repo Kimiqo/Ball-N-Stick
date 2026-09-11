@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { api } from '../lib/api';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -26,7 +28,7 @@ const SERVICES = [
   { n: '08', title: 'Hockey Street Save (HOSS)', desc: 'Bringing hockey to street communities — using the sport as a tool to reach and positively impact young people at the grassroots level.' },
 ];
 
-const ARMS = [
+const DEFAULT_ARMS = [
   {
     code: 'B&S Play',
     title: 'Training & Development',
@@ -65,6 +67,22 @@ const ARMS = [
 ];
 
 export default function WhatWeDo() {
+  const [arms, setArms] = useState(DEFAULT_ARMS);
+
+  useEffect(() => {
+    api.settings.get().then(data => {
+      if (!data) return;
+      setArms(prevArms => prevArms.map(arm => {
+        if (arm.code === 'B&S Play' && data.whatwedo_play_image_url) return { ...arm, img: data.whatwedo_play_image_url };
+        if (arm.code === 'B&S Media' && data.whatwedo_media_image_url) return { ...arm, img: data.whatwedo_media_image_url };
+        if (arm.code === 'B&S Global' && data.whatwedo_global_image_url) return { ...arm, img: data.whatwedo_global_image_url };
+        if (arm.code === 'B&S Event' && data.whatwedo_event_image_url) return { ...arm, img: data.whatwedo_event_image_url };
+        if (arm.code === 'B&S Foundation' && data.whatwedo_foundation_image_url) return { ...arm, img: data.whatwedo_foundation_image_url };
+        return arm;
+      }));
+    }).catch(console.error);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -119,7 +137,7 @@ export default function WhatWeDo() {
       </section>
 
       {/* Five arms — detailed */}
-      {ARMS.map((arm, i) => (
+      {arms.map((arm, i) => (
         <section key={arm.code} className={`py-16 md:py-24 ${i % 2 === 0 ? '' : 'bg-[#071A3D]'}`}>
           <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-center ${i % 2 !== 0 ? 'lg:[direction:rtl]' : ''}`}>

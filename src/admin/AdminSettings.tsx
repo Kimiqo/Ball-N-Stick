@@ -16,6 +16,12 @@ type SiteSettings = {
   website: string;
   ceoName: string;
   hero_image_url?: string;
+  about_image_url?: string;
+  whatwedo_play_image_url?: string;
+  whatwedo_media_image_url?: string;
+  whatwedo_global_image_url?: string;
+  whatwedo_event_image_url?: string;
+  whatwedo_foundation_image_url?: string;
 };
 
 const DEFAULTS: SiteSettings = {
@@ -32,10 +38,50 @@ const DEFAULTS: SiteSettings = {
   ceoName: 'Kojo Lumour Ameye',
 };
 
+function ImageUploader({
+  label,
+  description,
+  url,
+  onUpload
+}: {
+  label: string;
+  description: string;
+  url?: string;
+  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
+    await onUpload(e);
+    setUploading(false);
+  }
+  return (
+    <div>
+      <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>{label}</label>
+      <div className="flex items-start gap-4">
+        <div className="relative aspect-video w-40 bg-[#071A3D] border border-white/10 shrink-0 overflow-hidden">
+          {url ? (
+            <img src={url} alt="Preview" className="w-full h-full object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-[#F5F7FA]/20 text-xs text-center p-2">No image uploaded</div>
+          )}
+        </div>
+        <div>
+          <p className="text-xs text-[#F5F7FA]/40 mb-3 leading-relaxed">{description}</p>
+          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-xs text-[#F5F7FA] transition-colors rounded-sm border border-white/10">
+            {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+            {uploading ? 'Uploading...' : 'Upload New Image'}
+            <input type="file" className="hidden" accept="image/*" onChange={handle} disabled={uploading} />
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminSettings() {
   const [settings, setSettings] = useState<SiteSettings>(DEFAULTS);
   const [loading, setLoading] = useState(true);
-  const [uploadingHero, setUploadingHero] = useState(false);
   const [toast, setToast] = useState('');
 
   const flash = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
@@ -61,16 +107,14 @@ export default function AdminSettings() {
     }
   };
 
-  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const createUploadHandler = (key: keyof SiteSettings) => async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploadingHero(true);
     const url = await uploadImage(file);
     if (url) {
-      update({ hero_image_url: url });
-      flash('Hero image uploaded');
+      update({ [key]: url });
+      flash('Image uploaded');
     }
-    setUploadingHero(false);
   };
 
   const input = "w-full bg-white/[0.03] border border-white/[0.08] text-[#F5F7FA] placeholder-[#F5F7FA]/15 text-sm px-3 py-2.5 outline-none focus:border-[#D71920]/40 transition-colors";
@@ -133,31 +177,51 @@ export default function AdminSettings() {
         <section>
           <div className="flex items-center gap-2 mb-5">
             <ImageIcon size={13} className="text-[#D71920]" />
-            <div className="label text-[#F5F7FA]/40" style={{ fontSize: '0.62rem' }}>Global Media</div>
+            <div className="label text-[#F5F7FA]/40" style={{ fontSize: '0.62rem' }}>Page Images</div>
           </div>
-          <div className="flex flex-col gap-4">
-            <div>
-              <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Homepage Hero Image</label>
-              <div className="flex items-start gap-4">
-                <div className="relative aspect-video w-40 bg-[#071A3D] border border-white/10 shrink-0 overflow-hidden">
-                  {settings.hero_image_url ? (
-                    <img src={settings.hero_image_url} alt="Hero preview" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-[#F5F7FA]/20 text-xs text-center p-2">No image uploaded</div>
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs text-[#F5F7FA]/40 mb-3 leading-relaxed">
-                    This image will be displayed prominently at the top of the homepage. For best results, upload a high-resolution landscape image (16:9).
-                  </p>
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-xs text-[#F5F7FA] transition-colors rounded-sm border border-white/10">
-                    {uploadingHero ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                    {uploadingHero ? 'Uploading...' : 'Upload New Image'}
-                    <input type="file" className="hidden" accept="image/*" onChange={handleHeroUpload} disabled={uploadingHero} />
-                  </label>
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-col gap-8">
+            <ImageUploader 
+              label="Homepage Hero Image" 
+              description="Displayed at the top of the homepage (16:9)." 
+              url={settings.hero_image_url} 
+              onUpload={createUploadHandler('hero_image_url')} 
+            />
+            <ImageUploader 
+              label="About Page Hero Image" 
+              description="Displayed at the top of the About page." 
+              url={settings.about_image_url} 
+              onUpload={createUploadHandler('about_image_url')} 
+            />
+            <ImageUploader 
+              label="What We Do - B&S Play" 
+              description="Image for the Training & Development section." 
+              url={settings.whatwedo_play_image_url} 
+              onUpload={createUploadHandler('whatwedo_play_image_url')} 
+            />
+            <ImageUploader 
+              label="What We Do - B&S Media" 
+              description="Image for the Hockey Media section." 
+              url={settings.whatwedo_media_image_url} 
+              onUpload={createUploadHandler('whatwedo_media_image_url')} 
+            />
+            <ImageUploader 
+              label="What We Do - B&S Global" 
+              description="Image for the International Reach section." 
+              url={settings.whatwedo_global_image_url} 
+              onUpload={createUploadHandler('whatwedo_global_image_url')} 
+            />
+            <ImageUploader 
+              label="What We Do - B&S Event" 
+              description="Image for the Events & Programmes section." 
+              url={settings.whatwedo_event_image_url} 
+              onUpload={createUploadHandler('whatwedo_event_image_url')} 
+            />
+            <ImageUploader 
+              label="What We Do - B&S Foundation" 
+              description="Image for the Foundation & Community section." 
+              url={settings.whatwedo_foundation_image_url} 
+              onUpload={createUploadHandler('whatwedo_foundation_image_url')} 
+            />
           </div>
         </section>
 

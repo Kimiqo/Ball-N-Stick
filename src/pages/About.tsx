@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { api } from '../lib/api';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -56,6 +58,14 @@ const STRATEGY = [
 ];
 
 export default function About() {
+  const [aboutImage, setAboutImage] = useState('https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=900&fit=crop&auto=format');
+
+  useEffect(() => {
+    api.settings.get().then(data => {
+      if (data?.about_image_url) setAboutImage(data.about_image_url);
+    }).catch(console.error);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -67,7 +77,7 @@ export default function About() {
       <section className="relative pt-32 md:pt-44 pb-20 md:pb-28 overflow-hidden min-h-[75vh] flex flex-col justify-end">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=900&fit=crop&auto=format"
+            src={aboutImage}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-15"
