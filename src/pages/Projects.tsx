@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { api } from '../lib/api';
+import type { Project } from '../admin/AdminContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -15,51 +18,26 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-// Demo project data — replace with CMS content
-const PROJECTS = [
-  {
-    title: 'Hockey in Schools',
-    cat: 'Schools Programme',
-    desc: 'Integrating structured hockey coaching into school curricula and after-school programmes across Ghana, giving students access to equipment, qualified coaching, and inter-school competition.',
-    status: 'Active',
-    img: 'https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=900&h=600&fit=crop&auto=format',
-    tall: true,
-  },
-  {
-    title: 'Next Generation Development Programme',
-    cat: 'Youth Development',
-    desc: 'A structured pathway for talented young athletes, combining technical hockey training with leadership development, mentorship, and character-building activities.',
-    status: 'Active',
-    img: 'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=700&h=500&fit=crop&auto=format',
-    tall: false,
-  },
-  {
-    title: 'Umpire Training Initiative',
-    cat: 'Officiating',
-    desc: "Building Ghana's pipeline of trained, certified hockey umpires and technical officials — essential infrastructure for the sport's long-term growth.",
-    status: 'Active',
-    img: 'https://images.unsplash.com/photo-1780509459545-8618d4789bdb?w=700&h=500&fit=crop&auto=format',
-    tall: false,
-  },
-  {
-    title: 'Schools Hockey Festival',
-    cat: 'Events',
-    desc: 'An annual celebration of school hockey bringing together partner schools for competition, skill showcases, and community building around the sport.',
-    status: 'Annual',
-    img: 'https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=900&h=600&fit=crop&auto=format',
-    tall: false,
-  },
-  {
-    title: 'Community Outreach Programme',
-    cat: 'Partnerships',
-    desc: 'Working with community organisations, local government, and development partners to expand access to hockey beyond the school gate.',
-    status: 'Active',
-    img: 'https://images.unsplash.com/photo-1627423895015-4db87342a410?w=700&h=500&fit=crop&auto=format',
-    tall: false,
-  },
-];
-
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.projects.list()
+      .then(data => {
+        setProjects(data);
+        setLoading(false);
+      })
+      .catch(console.error);
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-[#F5F7FA]">Loading...</div>;
+  }
+
+  const featuredProject = projects.find(p => p.tall) || projects[0];
+  const regularProjects = projects.filter(p => p.id !== featuredProject?.id);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -92,43 +70,49 @@ export default function Projects() {
       </section>
 
       {/* Featured project — large */}
-      <section className="pb-4 bg-[#071A3D]">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
-          <Reveal>
-            <div className="relative overflow-hidden group h-[50vh] md:h-[65vh] bg-[#0a1e50]">
-              <img
-                src={PROJECTS[0].img}
-                alt={PROJECTS[0].title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-[#020B1C]/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="label text-[#D71920]">{PROJECTS[0].cat}</span>
-                  <span className="w-1 h-1 rounded-full bg-[#D71920]/50" />
-                  <span className="label text-[#D71920]">{PROJECTS[0].status}</span>
+      {featuredProject && (
+        <section className="pb-4 bg-[#071A3D]">
+          <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
+            <Reveal>
+              <div className="relative overflow-hidden group h-[50vh] md:h-[65vh] bg-[#0a1e50]">
+                {featuredProject.image_url ? (
+                  <img
+                    src={featuredProject.image_url}
+                    alt={featuredProject.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#0a1e50]" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-[#020B1C]/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="label text-[#D71920]">{featuredProject.cat}</span>
+                    <span className="w-1 h-1 rounded-full bg-[#D71920]/50" />
+                    <span className="label text-[#D71920]">{featuredProject.status}</span>
+                  </div>
+                  <h2
+                    className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] max-w-2xl"
+                    style={{ fontSize: 'clamp(1.8rem, 5vw, 5.5rem)' }}
+                  >
+                    {featuredProject.title}
+                  </h2>
+                  <p className="text-[#F5F7FA]/70 mt-4 max-w-lg text-sm leading-relaxed">
+                    {featuredProject.desc}
+                  </p>
                 </div>
-                <h2
-                  className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] max-w-2xl"
-                  style={{ fontSize: 'clamp(1.8rem, 5vw, 5.5rem)' }}
-                >
-                  {PROJECTS[0].title}
-                </h2>
-                <p className="text-[#F5F7FA]/55 mt-4 max-w-lg text-sm leading-relaxed">
-                  {PROJECTS[0].desc}
-                </p>
               </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Projects grid */}
       <section className="py-4 pb-20 md:pb-28 bg-[#071A3D]">
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {PROJECTS.slice(1).map((p, i) => (
+            {regularProjects.map((p, i) => (
               <motion.article
                 key={p.title}
                 className="group relative overflow-hidden bg-[#0a1e50] aspect-[4/3]"
@@ -137,12 +121,16 @@ export default function Projects() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}
               >
-                <img
-                  src={p.img}
-                  alt={p.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
+                {p.image_url ? (
+                  <img
+                    src={p.image_url}
+                    alt={p.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#0a1e50]" />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-[#020B1C]/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="flex items-center gap-2 mb-2">

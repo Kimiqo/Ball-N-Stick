@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 
 /* ── Animated counter ── */
 function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -107,10 +108,25 @@ const BS_ARMS = [
 import { api } from '../lib/api';
 import type { GalleryCollection, BSEvent } from '../admin/AdminContext';
 
+import { AnimatePresence } from 'framer-motion';
+
 export default function Home() {
+  const { settings } = useSettings();
   const [gallery, setGallery] = useState<GalleryCollection[]>([]);
   const [events, setEvents] = useState<BSEvent[]>([]);
-  const [heroImage, setHeroImage] = useState('https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=1080&fit=crop&auto=format');
+  const heroImages = settings.hero_carousel_images?.length 
+    ? settings.hero_carousel_images 
+    : settings.hero_image_url ? [settings.hero_image_url] : [];
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+
+  useEffect(() => {
+    if (heroImages.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+      }, 6000);
+      return () => clearInterval(interval);
+    }
+  }, [heroImages.length]);
 
   // Parallax setups
   const { scrollY } = useScroll();
@@ -120,9 +136,6 @@ export default function Home() {
   useEffect(() => {
     api.gallery.list().then(setGallery).catch(console.error);
     api.events.list().then(setEvents).catch(console.error);
-    api.settings.get().then(s => {
-      if (s?.hero_image_url) setHeroImage(s.hero_image_url);
-    }).catch(console.error);
   }, []);
 
   return (
@@ -134,13 +147,20 @@ export default function Home() {
     >
       {/* ── 1. HERO ── */}
       <section className="relative h-screen min-h-[620px] flex flex-col justify-end overflow-hidden">
-        <motion.img
-          src={heroImage}
-          alt="Field hockey in action"
-          className="absolute inset-0 w-full h-[120%] object-cover object-center top-[-10%]"
-          style={{ y: heroY }}
-          loading="eager"
-        />
+        <AnimatePresence mode="popLayout">
+          <motion.img
+            key={currentHeroIndex}
+            src={heroImages[currentHeroIndex]}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
+            alt="Field hockey in action"
+            className="absolute inset-0 w-full h-[120%] object-cover object-center top-[-10%]"
+            style={{ y: heroY }}
+            loading="eager"
+          />
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C] via-[#020B1C]/55 to-[#020B1C]/15" />
 
         <div className="relative z-10 max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 pb-16 md:pb-24 w-full">
@@ -163,7 +183,7 @@ export default function Home() {
               speed={50}
               repeat={Infinity}
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]"
-              style={{ fontSize: 'clamp(2.2rem, 8vw, 8.5rem)', whiteSpace: 'pre-line' }}
+              style={{ fontSize: 'clamp(2.2rem, 8vw, 6rem)', whiteSpace: 'pre-line' }}
             />
           </div>
 
@@ -190,7 +210,7 @@ export default function Home() {
         <FloatCard
           delay={0.9}
           rotate={-2}
-          className="absolute bottom-20 right-6 md:bottom-28 md:right-16 min-w-[180px] md:min-w-[210px]"
+          className="hidden sm:block absolute bottom-20 right-6 md:bottom-28 md:right-16 min-w-[180px] md:min-w-[210px]"
         >
           <div className="label text-[#D71920] mb-1.5">Promoting Field Hockey</div>
           <div className="font-display font-black uppercase text-[#F5F7FA] text-lg md:text-xl leading-[0.95]">
@@ -215,7 +235,6 @@ export default function Home() {
       {/* ── 2. IMPACT STATS ── */}
       <section className="py-20 md:py-28 relative overflow-hidden bg-[#071A3D]">
         <motion.div className="absolute inset-0 opacity-[0.07] top-[-20%] h-[140%]" style={{ y: bgY }}>
-          <img src="https://images.unsplash.com/photo-1780509459545-8618d4789bdb?w=1920&h=600&fit=crop&auto=format" alt="" aria-hidden="true" className="w-full h-full object-cover" />
         </motion.div>
         <div className="relative max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
@@ -252,7 +271,7 @@ export default function Home() {
                   className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-5"
                   delay={0.15}
                 />
-                <p className="text-[#F5F7FA]/50 text-sm leading-relaxed mb-6">
+                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed mb-6">
                   Ball &amp; Stick grew from a passion for excellence in the Field Hockey fraternity, with an ambition to grow the sport across Africa and develop talent in Ghana for the world stage. We have experienced personnel including FIH-status umpires, technical officials, and media and marketing expertise.
                 </p>
                 <Link to="/about" className="inline-flex items-center gap-1.5 label text-[#D71920] hover:text-[#F5F7FA] transition-colors">
@@ -288,12 +307,12 @@ export default function Home() {
           {/* Central image with overlapping arm cards */}
           <div className="relative">
             <div className="relative aspect-[16/7] md:aspect-[21/8] overflow-hidden bg-[#071A3D]">
-              <img
-                src="https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=1600&h=700&fit=crop&auto=format"
+              {settings.home_whatwedo_image_url && <img
+                src={settings.home_whatwedo_image_url}
                 alt="Ball & Stick Ghana in action"
                 className="w-full h-full object-cover opacity-40"
                 loading="lazy"
-              />
+              />}
               <div className="absolute inset-0 bg-gradient-to-r from-[#020B1C]/80 via-transparent to-[#020B1C]/80" />
             </div>
 
@@ -305,7 +324,7 @@ export default function Home() {
                   <div className="font-display font-black uppercase text-[#F5F7FA] text-lg leading-[0.9] mb-2" style={{ whiteSpace: 'pre-line' }}>
                     {arm.title}
                   </div>
-                  <p className="text-[#F5F7FA]/40 text-[0.78rem] leading-relaxed">{arm.desc}</p>
+                  <p className="text-[#F5F7FA]/70 text-[0.78rem] leading-relaxed">{arm.desc}</p>
                 </FloatCard>
               ))}
             </div>
@@ -323,7 +342,7 @@ export default function Home() {
                 >
                   <div className="label text-[#D71920] mb-2">{arm.code}</div>
                   <div className="font-display font-black uppercase text-[#F5F7FA] text-lg leading-[0.9] mb-2">{arm.title.replace('\n', ' ')}</div>
-                  <p className="text-[#F5F7FA]/40 text-[0.78rem] leading-relaxed">{arm.desc}</p>
+                  <p className="text-[#F5F7FA]/70 text-[0.78rem] leading-relaxed">{arm.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -357,7 +376,7 @@ export default function Home() {
             {gallery.length > 0 && (
               <Reveal>
                 <Link to="/gallery" className="block relative overflow-hidden group lg:col-span-3 aspect-[4/3] lg:h-[440px] bg-[#0a1e50]">
-                  <img src={gallery[0].image_url || 'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=800&h=600&fit=crop&auto=format'} alt={gallery[0].name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" loading="lazy" />
+                  {gallery[0]?.image_url && <img src={gallery[0].image_url} alt={gallery[0].name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" loading="lazy" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-transparent to-transparent" />
                   {/* Floating category card */}
                   <FloatCard delay={0.3} rotate={-1.5} className="absolute top-4 right-4">
@@ -377,8 +396,8 @@ export default function Home() {
             <div className="lg:col-span-2 flex flex-col gap-3">
               {gallery.slice(1, 3).map((col, i) => (
                 <Reveal key={col.category + i} delay={0.1 + i * 0.1}>
-                  <Link to="/gallery" className="block relative overflow-hidden group aspect-[4/3] lg:flex-1 bg-[#0a1e50]">
-                    <img src={col.image_url || 'https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=800&h=600&fit=crop&auto=format'} alt={col.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70" loading="lazy" />
+                  <div key={col.id} className="relative h-[190px] bg-[#071A3D] overflow-hidden group">
+                    {col.image_url && <img src={col.image_url} alt={col.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70" loading="lazy" />}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 to-transparent" />
                     <FloatCard delay={0.3 + i * 0.1} rotate={1.2} className="absolute top-3 right-3">
                       <div className="label text-[#D71920] text-[0.58rem]">{col.category}</div>
@@ -388,7 +407,7 @@ export default function Home() {
                         {col.name}
                       </h3>
                     </div>
-                  </Link>
+                  </div>
                 </Reveal>
               ))}
             </div>
@@ -403,7 +422,7 @@ export default function Home() {
             <Reveal>
               <div>
                 <div className="label text-[#D71920] mb-3">Events</div>
-                <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 5vw, 5.5rem)' }}>
+                <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 5vw, 4.5rem)' }}>
                   On the<br /><span className="text-outline">Calendar</span>
                 </h2>
               </div>
@@ -416,15 +435,18 @@ export default function Home() {
           </div>
 
           {/* Featured event with floating card */}
+          {events.length > 0 && (() => {
+            const featuredEvent = events[0];
+            return (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <Reveal>
               <div className="relative overflow-hidden aspect-[4/3] bg-[#071A3D] group">
-                <img
-                  src="https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=800&h=600&fit=crop&auto=format"
-                  alt="Hockey event"
-                  className="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
+                {featuredEvent.image_url && <img
+                  src={featuredEvent.image_url}
+                  alt={featuredEvent.title || 'Hockey event'}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-40"
                   loading="lazy"
-                />
+                />}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/80 to-transparent" />
                 {/* Floating event card */}
                 <FloatCard delay={0.3} rotate={2} className="absolute top-5 right-5 min-w-[140px]">
@@ -432,9 +454,9 @@ export default function Home() {
                   <div className="font-display font-bold uppercase text-[#F5F7FA] text-sm">HITMALL</div>
                 </FloatCard>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="label text-[#D71920] mb-2">Hockey in the Mall</div>
+                  <div className="label text-[#D71920] mb-2">{featuredEvent.title || 'Hockey in the Mall'}</div>
                   <h3 className="font-display font-black uppercase text-[#F5F7FA] text-2xl md:text-3xl leading-[0.9]">
-                    Taking Hockey to the City
+                    {featuredEvent.description || 'Taking Hockey to the City'}
                   </h3>
                 </div>
               </div>
@@ -465,6 +487,7 @@ export default function Home() {
               </Reveal>
             </div>
           </div>
+          );})()}
         </div>
       </section>
 
@@ -500,21 +523,20 @@ export default function Home() {
       </section>
 
       {/* ── 7. FINAL CTA ── */}
-      <section className="py-28 md:py-40 relative overflow-hidden bg-[#020B1C]">
-        <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1597260390010-ba4dc841b04c?w=1920&h=800&fit=crop&auto=format" alt="" aria-hidden="true" className="w-full h-full object-cover opacity-[0.07]" />
+      <section className="py-24 relative overflow-hidden bg-[#0a1e50]">
+        <div className="absolute inset-0 top-[-20%] h-[140%]">
         </div>
         <div className="relative max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 text-center">
           <Reveal>
             <div className="label text-[#D71920] mb-5">Join the Movement</div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mx-auto" style={{ fontSize: 'clamp(2.2rem, 8vw, 9.5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] mx-auto" style={{ fontSize: 'clamp(2.2rem, 8vw, 7rem)' }}>
               Get Involved.
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-[#F5F7FA]/45 mt-6 mb-10 max-w-md mx-auto text-sm leading-relaxed">
+            <p className="text-[#F5F7FA]/70 mt-6 mb-10 max-w-md mx-auto text-sm leading-relaxed">
               Whether you&apos;re a player, a school, a sponsor, a partner, or a hockey enthusiast — there&apos;s a place for you in Ghana&apos;s hockey story.
             </p>
           </Reveal>

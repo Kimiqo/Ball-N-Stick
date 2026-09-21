@@ -136,6 +136,27 @@ export const api = {
       if (error) throw error;
     }
   },
+  projects: {
+    async list() {
+      const { data, error } = await supabase.from('bs_projects').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+    async create(item: any) {
+      const { data, error } = await supabase.from('bs_projects').insert([item]).select().single();
+      if (error) throw error;
+      return data;
+    },
+    async update(id: string, updates: any) {
+      const { data, error } = await supabase.from('bs_projects').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    async delete(id: string) {
+      const { error } = await supabase.from('bs_projects').delete().eq('id', id);
+      if (error) throw error;
+    }
+  },
   settings: {
     async get() {
       const { data, error } = await supabase.from('bs_settings').select('data').eq('id', 'global').single();

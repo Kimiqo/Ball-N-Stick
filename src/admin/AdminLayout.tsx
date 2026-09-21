@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Navigate, Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Calendar, Images, FileText,
-  Handshake, Users, Settings, LogOut, ChevronRight, ExternalLink, Menu, X
+  Handshake, Users, Settings, LogOut, ChevronRight, ExternalLink, Menu, X, CheckSquare
 } from 'lucide-react';
 import { useAdmin } from './AdminContext';
 
@@ -10,6 +10,7 @@ const NAV = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
   { label: 'Events', icon: Calendar, path: '/admin/events' },
   { label: 'Gallery', icon: Images, path: '/admin/gallery' },
+  { label: 'Projects', icon: CheckSquare, path: '/admin/projects' },
   { label: 'Stories', icon: FileText, path: '/admin/stories' },
   { label: 'People', icon: Users, path: '/admin/people' },
   { label: 'Partners', icon: Handshake, path: '/admin/partners' },
@@ -136,7 +137,7 @@ export default function AdminLayout() {
             <span className="text-[#F5F7FA]/55">{currentNav?.label ?? 'Dashboard'}</span>
           </div>
           <div className="label text-[#F5F7FA]/12 hidden sm:block" style={{ fontSize: '0.56rem' }}>
-            Ball & Stick Ghana CMS &mdash; Prototype
+            Ball & Stick Ghana CMS
           </div>
         </header>
 

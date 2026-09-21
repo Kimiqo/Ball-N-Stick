@@ -48,8 +48,8 @@ export default function Footer() {
               <a href="tel:+23303034934561" className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
                 <Phone size={11} className="text-[#D71920] shrink-0" /> 0303 934 561
               </a>
-              <a href="mailto:info@ballandstick.com" className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
-                <Mail size={11} className="text-[#D71920] shrink-0" /> info@ballandstick.com
+              <a href="mailto:kojo@ballandstick.com" className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
+                <Mail size={11} className="text-[#D71920] shrink-0" /> kojo@ballandstick.com
               </a>
               <span className="flex items-start gap-2 text-xs text-[#F5F7FA]/25">
                 <MapPin size={11} className="text-[#D71920] shrink-0 mt-0.5" />

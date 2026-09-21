@@ -2,41 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Globe, Mail, Phone, MapPin, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
 import { api, uploadImage } from '../lib/api';
-
-type SiteSettings = {
-  tagline: string;
-  mission: string;
-  phone1: string;
-  phone2: string;
-  emailGeneral: string;
-  emailCeo: string;
-  addressStreet: string;
-  addressCity: string;
-  addressPostal: string;
-  website: string;
-  ceoName: string;
-  hero_image_url?: string;
-  about_image_url?: string;
-  whatwedo_play_image_url?: string;
-  whatwedo_media_image_url?: string;
-  whatwedo_global_image_url?: string;
-  whatwedo_event_image_url?: string;
-  whatwedo_foundation_image_url?: string;
-};
-
-const DEFAULTS: SiteSettings = {
-  tagline: 'Action Imagined!!',
-  mission: 'To promote Field Hockey across Ghana and Africa.',
-  phone1: '0303 934 561',
-  phone2: '0244 241 809',
-  emailGeneral: 'info@ballandstick.com',
-  emailCeo: 'kojo@ballandstick.com',
-  addressStreet: 'No. 10 Hospital Street, Spintex Road, Accra',
-  addressCity: 'Accra, Ghana',
-  addressPostal: 'P.O BOX KA 16379, Airport-Accra',
-  website: 'www.ballandstick.com',
-  ceoName: 'Kojo Lumour Ameye',
-};
+import { DEFAULTS, useSettings } from '../contexts/SettingsContext';
+import type { SiteSettings } from '../contexts/SettingsContext';
 
 function ImageUploader({
   label,
@@ -80,6 +47,7 @@ function ImageUploader({
 }
 
 export default function AdminSettings() {
+  const { refreshSettings } = useSettings();
   const [settings, setSettings] = useState<SiteSettings>(DEFAULTS);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState('');
@@ -102,6 +70,7 @@ export default function AdminSettings() {
     try {
       await api.settings.update(settings);
       flash('Settings saved');
+      await refreshSettings();
     } catch (e) {
       flash('Error saving settings');
     }
@@ -116,6 +85,24 @@ export default function AdminSettings() {
       flash('Image uploaded');
     }
   };
+
+  const createCarouselUploadHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadImage(file);
+    if (url) {
+      const current = settings.hero_carousel_images || [];
+      update({ hero_carousel_images: [...current, url] });
+      flash('Carousel image added');
+    }
+  };
+
+  const removeCarouselImage = (index: number) => {
+    const current = settings.hero_carousel_images || [];
+    update({ hero_carousel_images: current.filter((_, i) => i !== index) });
+  };
+
+
 
   const input = "w-full bg-white/[0.03] border border-white/[0.08] text-[#F5F7FA] placeholder-[#F5F7FA]/15 text-sm px-3 py-2.5 outline-none focus:border-[#D71920]/40 transition-colors";
 
@@ -180,11 +167,36 @@ export default function AdminSettings() {
             <div className="label text-[#F5F7FA]/40" style={{ fontSize: '0.62rem' }}>Page Images</div>
           </div>
           <div className="flex flex-col gap-8">
+            <div className="border border-white/[0.05] p-5 bg-white/[0.02]">
+              <label className="label text-[#F5F7FA]/40 block mb-3 text-xs">Homepage Hero Carousel</label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                {(settings.hero_carousel_images || []).map((img, i) => (
+                  <div key={i} className="relative aspect-video bg-[#071A3D] overflow-hidden group">
+                    <img src={img} className="w-full h-full object-cover" />
+                    <button onClick={() => removeCarouselImage(i)} className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-xs text-red-400 font-bold">
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <label className="relative aspect-video bg-white/[0.03] border border-dashed border-white/20 hover:border-white/40 cursor-pointer flex flex-col items-center justify-center text-[#F5F7FA]/40 transition-colors">
+                  <Upload size={14} className="mb-2" />
+                  <span className="text-[0.65rem] uppercase font-bold tracking-wider">Add Image</span>
+                  <input type="file" className="hidden" accept="image/*" onChange={createCarouselUploadHandler} />
+                </label>
+              </div>
+            </div>
+            
             <ImageUploader 
-              label="Homepage Hero Image" 
-              description="Displayed at the top of the homepage (16:9)." 
+              label="Homepage Static Hero (Fallback)" 
+              description="Used if carousel is empty." 
               url={settings.hero_image_url} 
               onUpload={createUploadHandler('hero_image_url')} 
+            />
+            <ImageUploader 
+              label="Homepage 'Five Arms' Section Image" 
+              description="Displayed in the 'What We Do' section on the homepage." 
+              url={settings.home_whatwedo_image_url} 
+              onUpload={createUploadHandler('home_whatwedo_image_url')} 
             />
             <ImageUploader 
               label="About Page Hero Image" 
@@ -221,6 +233,30 @@ export default function AdminSettings() {
               description="Image for the Foundation & Community section." 
               url={settings.whatwedo_foundation_image_url} 
               onUpload={createUploadHandler('whatwedo_foundation_image_url')} 
+            />
+            <ImageUploader 
+              label="Partners Page Background" 
+              description="Background image for the Partners page." 
+              url={settings.partners_bg_image_url} 
+              onUpload={createUploadHandler('partners_bg_image_url')} 
+            />
+            <ImageUploader 
+              label="Schools Hero Background" 
+              description="Background image for the top of the Schools page." 
+              url={settings.schools_hero_image_url} 
+              onUpload={createUploadHandler('schools_hero_image_url')} 
+            />
+            <ImageUploader 
+              label="Schools Middle Section Image" 
+              description="Image for the middle section of the Schools page." 
+              url={settings.schools_mid_image_url} 
+              onUpload={createUploadHandler('schools_mid_image_url')} 
+            />
+            <ImageUploader 
+              label="Get Involved Background" 
+              description="Background image for the Get Involved page." 
+              url={settings.getinvolved_bg_image_url} 
+              onUpload={createUploadHandler('getinvolved_bg_image_url')} 
             />
           </div>
         </section>

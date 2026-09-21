@@ -16,12 +16,6 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-const IMGS = [
-  'https://images.unsplash.com/photo-1534597422092-8a84f1b45a9c?w=400&h=500&fit=crop&auto=format',
-  'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=400&h=500&fit=crop&auto=format',
-  'https://images.unsplash.com/photo-1627423895015-4db87342a410?w=400&h=500&fit=crop&auto=format',
-];
-
 export default function People() {
   const [people, setPeople] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,14 +63,14 @@ export default function People() {
       <section className="py-16 md:py-20 bg-[#071A3D]">
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <Reveal>
-            <div className="relative aspect-[3/4] overflow-hidden bg-[#0a1e50] max-w-sm">
-              <img
-                src={ceo?.image_url || IMGS[0]}
-                alt={ceo?.name || "Kojo Lumour Ameye"}
-                className="w-full h-full object-cover grayscale"
+            <div className="relative aspect-[3/4] md:aspect-[4/5] bg-[#0a1e50]">
+              {ceo?.image_url && <img
+                src={ceo.image_url}
+                alt={ceo.name || "Kojo Lumour Ameye"}
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/60 to-transparent" />
+              />}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071A3D] via-[#071A3D]/20 to-transparent md:hidden" />
             </div>
           </Reveal>
           <Reveal delay={0.1}>
@@ -92,7 +86,7 @@ export default function People() {
               )}
               <div className="divider my-6" />
               <p className="text-[#F5F7FA]/50 text-sm leading-relaxed">
-                Ball &amp; Stick Ghana was founded with a passion for excellence in the Field Hockey fraternity and an ambition to grow the sport across Africa. Full team profiles are managed through the CMS.
+                Ball &amp; Stick Ghana was founded with a passion for excellence in the Field Hockey fraternity and an ambition to grow the sport across Africa.
               </p>
             </div>
           </Reveal>
@@ -139,7 +133,7 @@ export default function People() {
             ))}
           </div>
           <p className="text-[#F5F7FA]/20 text-xs mt-6">
-            Full team profiles managed through CMS. Contact info@ballandstick.com for enquiries.
+            Contact <a href="mailto:kojo@ballandstick.com" className="label text-[#F5F7FA]/20 hover:text-[#D71920] transition-colors text-[0.6rem]">kojo@ballandstick.com</a> for enquiries.
           </p>
         </div>
       </section>
@@ -151,9 +145,7 @@ export default function People() {
             <div className="label text-[#F5F7FA]/20 mb-8">The Ball &amp; Stick Ghana Team</div>
           </Reveal>
           <div className="grid grid-cols-3 gap-2">
-            {(people.filter(p => p.image_url && p.id !== ceo?.id).map(p => p.image_url as string).length > 0 
-              ? people.filter(p => p.image_url && p.id !== ceo?.id).map(p => p.image_url as string).slice(0, 3) 
-              : IMGS).map((src, i) => (
+            {(people.filter(p => p.image_url && p.id !== ceo?.id).map(p => p.image_url as string).slice(0, 3)).concat(['', '', '']).slice(0, 3).map((src, i) => (
               <motion.div
                 key={i}
                 className="aspect-[3/4] overflow-hidden bg-[#0a1e50]"
@@ -162,7 +154,7 @@ export default function People() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <img src={src} alt="Team member" className="w-full h-full object-cover grayscale opacity-60" loading="lazy" />
+                {src && <img src={src} alt="Team member" className="w-full h-full object-cover grayscale opacity-60" loading="lazy" />}
               </motion.div>
             ))}
           </div>

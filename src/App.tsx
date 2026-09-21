@@ -17,6 +17,7 @@ import People from './pages/People';
 import Partners from './pages/Partners';
 import GetInvolved from './pages/GetInvolved';
 import Contact from './pages/Contact';
+import { SettingsProvider } from './contexts/SettingsContext';
 
 // Admin
 import { AdminProvider } from './admin/AdminContext';
@@ -24,6 +25,7 @@ import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
 import Dashboard from './admin/Dashboard';
 import AdminEvents from './admin/AdminEvents';
+import AdminProjects from './admin/AdminProjects';
 import AdminGallery from './admin/AdminGallery';
 import AdminStories from './admin/AdminStories';
 import AdminPeople from './admin/AdminPeople';
@@ -65,6 +67,7 @@ function AdminRoutes() {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/projects" element={<AdminProjects />} />
           <Route path="/admin/gallery" element={<AdminGallery />} />
           <Route path="/admin/stories" element={<AdminStories />} />
           <Route path="/admin/people" element={<AdminPeople />} />
@@ -91,9 +94,11 @@ function RootRouter() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Preloader />
-      <RootRouter />
-    </BrowserRouter>
+    <SettingsProvider>
+      <BrowserRouter>
+        <Preloader />
+        <RootRouter />
+      </BrowserRouter>
+    </SettingsProvider>
   );
 }

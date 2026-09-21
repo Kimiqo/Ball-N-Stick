@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { api } from '../lib/api';
+import { useSettings } from '../contexts/SettingsContext';
 import type { Partner } from '../admin/AdminContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -26,8 +27,11 @@ const PARTNERSHIP_TYPES = [
 ];
 
 export default function Partners() {
+  const { settings } = useSettings();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const bgImage = settings.partners_bg_image_url;
 
   useEffect(() => {
     api.partners.list()
@@ -52,7 +56,7 @@ export default function Partners() {
       {/* Hero */}
       <section className="pt-32 md:pt-44 pb-16 relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1597260390010-ba4dc841b04c?w=1920&h=700&fit=crop&auto=format" alt="" aria-hidden="true" className="w-full h-full object-cover opacity-[0.08]" />
+          <img src={bgImage} alt="" aria-hidden="true" className="w-full h-full object-cover opacity-15" loading="eager" />
           <div className="absolute inset-0 bg-[#020B1C]/90" />
         </div>
         <div className="relative max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
@@ -62,11 +66,11 @@ export default function Partners() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">Partners</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86]" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 6rem)' }}>
               Together
               <br /><span className="text-outline">We Grow</span>
             </h1>
-            <p className="text-[#F5F7FA]/50 mt-6 max-w-lg text-sm leading-relaxed">
+            <p className="text-[#F5F7FA]/70 mt-6 max-w-lg text-sm leading-relaxed">
               Ball &amp; Stick Ghana works with leading organisations that share our commitment to growing field hockey.
             </p>
           </motion.div>
@@ -102,7 +106,7 @@ export default function Partners() {
                 <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.3rem, 3vw, 2.8rem)' }}>
                   {p.name}
                 </h3>
-                <p className="text-[#F5F7FA]/50 text-sm leading-relaxed">{p.description}</p>
+                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed">{p.description}</p>
               </motion.div>
             ))}
           </div>
@@ -114,7 +118,7 @@ export default function Partners() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="label text-[#D71920] mb-4">Partnership Opportunities</div>
-            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 5rem)' }}>
+            <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-12" style={{ fontSize: 'clamp(1.8rem, 5vw, 4.5rem)' }}>
               How to Partner
               <br />With Us
             </h2>
@@ -132,7 +136,7 @@ export default function Partners() {
                 <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.2rem, 2.5vw, 2.2rem)' }}>
                   {pt.title}
                 </h3>
-                <p className="text-[#F5F7FA]/45 text-sm leading-relaxed">{pt.desc}</p>
+                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed">{pt.desc}</p>
                 <div className="mt-6 h-px w-0 group-hover:w-6 bg-[#D71920] transition-all duration-500" />
               </motion.div>
             ))}
@@ -146,14 +150,14 @@ export default function Partners() {
           <Reveal>
             <div>
               <div className="label text-[#D71920] mb-4">Partner With Ball &amp; Stick</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 4.5vw, 5rem)' }}>
+              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9]" style={{ fontSize: 'clamp(1.8rem, 4.5vw, 4.5rem)' }}>
                 Let&apos;s Build Ghanaian Hockey Together
               </h2>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
             <div>
-              <p className="text-[#F5F7FA]/50 text-sm leading-relaxed mb-8">
+              <p className="text-[#F5F7FA]/70 text-sm leading-relaxed mb-8">
                 Whether you&apos;re a corporation, a foundation, or an international hockey body — Ball &amp; Stick Ghana offers meaningful partnership opportunities. Contact us to explore how we can grow the game together.
               </p>
               <div className="flex flex-wrap gap-4">

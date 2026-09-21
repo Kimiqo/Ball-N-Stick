@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, ArrowRight, Check } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Check, AlertCircle } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
+import { AnimatePresence } from 'framer-motion';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -19,10 +21,17 @@ type FormState = { name: string; email: string; subject: string; message: string
 const SUBJECTS = ['General Enquiry', 'Schools Partnership', 'Sponsorship & Partnership', 'Media & Press', 'Player Enquiry', 'Equipment', 'Other'];
 
 export default function Contact() {
+  const { settings } = useSettings();
   const [form, setForm] = useState<FormState>({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{message: string, type: 'error' | 'success'} | null>(null);
+
+  const showToast = (message: string, type: 'error' | 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000);
+  };
 
   const validate = () => {
     const e: Partial<FormState> = {};
@@ -40,25 +49,38 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      // Replace this URL with your actual Formspree endpoint, or use an environment variable
-      const formspreeUrl = import.meta.env.VITE_FORMSPREE_URL || 'https://formspree.io/f/YOUR_FORM_ID';
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_placeholder';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_placeholder';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'oE5aY_2jmhM062Wan';
       
-      const response = await fetch(formspreeUrl, {
+      const payload = {
+        service_id: serviceId,
+        template_id: templateId,
+        user_id: publicKey,
+        template_params: {
+          from_name: form.name,
+          reply_to: form.email,
+          subject: form.subject,
+          message: form.message
+        }
+      };
+
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
         setSubmitted(true);
       } else {
-        alert("Oops! There was a problem submitting your form.");
+        showToast("Oops! There was a problem sending your message.", "error");
       }
     } catch (error) {
-      alert("Oops! There was a problem submitting your form.");
+      showToast("Oops! There was a network error.", "error");
     } finally {
       setLoading(false);
     }
@@ -99,44 +121,46 @@ export default function Contact() {
           {/* Info */}
           <Reveal>
             <div className="lg:col-span-2">
-              <p className="text-[#F5F7FA]/50 text-sm leading-relaxed mb-10">
+              <p className="text-[#F5F7FA]/70 text-sm leading-relaxed mb-10">
                 Whether you&apos;re a school, a potential partner, a player, or just someone interested in field hockey in Ghana — we&apos;d love to hear from you.
               </p>
 
               <div className="flex flex-col gap-6 mb-10">
                 <div>
                   <div className="label text-[#F5F7FA]/20 mb-2">General</div>
-                  <a href="tel:03034934561" className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors mb-1.5">
-                    <Phone size={12} className="text-[#D71920] shrink-0" /> 0303 934 561
+                  <a href={`tel:${settings.phone1.replace(/\s+/g, '')}`} className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors mb-1.5">
+                    <Phone size={12} className="text-[#D71920] shrink-0" /> {settings.phone1}
                   </a>
-                  <a href="tel:0244241809" className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors mb-1.5">
-                    <Phone size={12} className="text-[#D71920] shrink-0" /> 0244 241 809
-                  </a>
-                  <a href="mailto:info@ballandstick.com" className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors">
-                    <Mail size={12} className="text-[#D71920] shrink-0" /> info@ballandstick.com
+                  {settings.phone2 && (
+                    <a href={`tel:${settings.phone2.replace(/\s+/g, '')}`} className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors mb-1.5">
+                      <Phone size={12} className="text-[#D71920] shrink-0" /> {settings.phone2}
+                    </a>
+                  )}
+                  <a href={`mailto:${settings.emailGeneral}`} className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors">
+                    <Mail size={12} className="text-[#D71920] shrink-0" /> {settings.emailGeneral}
                   </a>
                 </div>
                 <div>
-                  <div className="label text-[#F5F7FA]/20 mb-2">CEO — Kojo Lumour Ameye</div>
-                  <a href="mailto:kojo@ballandstick.com" className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors">
-                    <Mail size={12} className="text-[#D71920] shrink-0" /> kojo@ballandstick.com
+                  <div className="label text-[#F5F7FA]/20 mb-2">CEO — {settings.ceoName}</div>
+                  <a href={`mailto:${settings.emailCeo}`} className="flex items-center gap-2 text-sm text-[#F5F7FA]/55 hover:text-[#F5F7FA] transition-colors">
+                    <Mail size={12} className="text-[#D71920] shrink-0" /> {settings.emailCeo}
                   </a>
                 </div>
                 <div>
                   <div className="label text-[#F5F7FA]/20 mb-2">Physical Address</div>
-                  <p className="flex items-start gap-2 text-sm text-[#F5F7FA]/40 leading-relaxed">
+                  <p className="flex items-start gap-2 text-sm text-[#F5F7FA]/70 leading-relaxed">
                     <MapPin size={12} className="text-[#D71920] shrink-0 mt-0.5" />
-                    No. 10 Hospital Street,<br />Spintex Road, Accra
+                    {settings.addressStreet},<br />{settings.addressCity}
                   </p>
                 </div>
                 <div>
                   <div className="label text-[#F5F7FA]/20 mb-2">Postal Address</div>
-                  <p className="text-sm text-[#F5F7FA]/35">P.O BOX KA 16379, Airport-Accra</p>
+                  <p className="text-sm text-[#F5F7FA]/70">{settings.addressPostal}</p>
                 </div>
               </div>
 
               <div className="divider mb-6" />
-              <div className="label text-[#F5F7FA]/20 mb-4">www.ballandstick.com</div>
+              <div className="label text-[#F5F7FA]/20 mb-4">{settings.website}</div>
             </div>
           </Reveal>
 
@@ -202,6 +226,25 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-sm shadow-2xl border ${
+              toast.type === 'error' ? 'bg-[#0f0404] border-[#D71920]/30 text-[#D71920]' : 'bg-[#040f06] border-green-500/30 text-green-500'
+            }`}
+          >
+            {toast.type === 'error' ? <AlertCircle size={18} /> : <Check size={18} />}
+            <span className="font-display font-bold uppercase tracking-wider text-xs">
+              {toast.message}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

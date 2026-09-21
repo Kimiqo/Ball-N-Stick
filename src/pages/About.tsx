@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { api } from '../lib/api';
+import { useSettings } from '../contexts/SettingsContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -58,13 +58,8 @@ const STRATEGY = [
 ];
 
 export default function About() {
-  const [aboutImage, setAboutImage] = useState('https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=1920&h=900&fit=crop&auto=format');
-
-  useEffect(() => {
-    api.settings.get().then(data => {
-      if (data?.about_image_url) setAboutImage(data.about_image_url);
-    }).catch(console.error);
-  }, []);
+  const { settings } = useSettings();
+  const aboutImage = settings.about_image_url;
 
   return (
     <motion.div
@@ -81,6 +76,7 @@ export default function About() {
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-15"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020B1C] via-[#020B1C]/60 to-[#020B1C]" />
         </div>
@@ -92,7 +88,7 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="label text-[#D71920] mb-4">About</div>
-            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl" style={{ fontSize: 'clamp(2.2rem, 7vw, 8rem)' }}>
+            <h1 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl" style={{ fontSize: 'clamp(2.2rem, 7vw, 6rem)' }}>
               Who We
               <br /><span className="text-outline">Are</span>
             </h1>
@@ -138,7 +134,7 @@ export default function About() {
               <p className="text-[#F5F7FA]/60 leading-relaxed mb-5 text-sm">
                 Ball &amp; Stick grew from a passion for excellence in the Field Hockey fraternity, with an ambition to grow the sport across Africa and develop talent in Ghana for the world stage.
               </p>
-              <p className="text-[#F5F7FA]/45 leading-relaxed text-sm">
+              <p className="text-[#F5F7FA]/70 leading-relaxed text-sm">
                 The organisation has experienced personnel within Field Hockey, including FIH-status umpires and technical officials, as well as media and marketing expertise. Through five distinct arms — B&amp;S Play, B&amp;S Media, B&amp;S Global, B&amp;S Event, and B&amp;S Foundation — Ball &amp; Stick delivers a comprehensive approach to hockey development, promotion, and community impact.
               </p>
               <div className="divider mt-6" />
@@ -170,7 +166,7 @@ export default function About() {
                 <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.8rem)' }}>
                   {v.title}
                 </h3>
-                <p className="text-[#F5F7FA]/45 text-sm leading-relaxed">{v.desc}</p>
+                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed">{v.desc}</p>
                 <div className="mt-6 h-px w-0 group-hover:w-8 bg-[#D71920] transition-all duration-500" />
               </motion.div>
             ))}
@@ -200,7 +196,7 @@ export default function About() {
                 <h3 className="font-display font-black uppercase text-[#F5F7FA] text-xl md:text-2xl leading-tight mb-3">
                   {s.title}
                 </h3>
-                <p className="text-[#F5F7FA]/45 text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed">{s.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -237,7 +233,7 @@ export default function About() {
             ))}
           </div>
           <p className="text-[#F5F7FA]/20 text-xs mt-6">
-            Full team profiles managed through CMS. Contact info@ballandstick.com for enquiries.
+            Contact <a href="mailto:kojo@ballandstick.com" className="label text-[#F5F7FA]/20 hover:text-[#D71920] transition-colors text-[0.6rem]">kojo@ballandstick.com</a> for enquiries.
           </p>
         </div>
       </section>

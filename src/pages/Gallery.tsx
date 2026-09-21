@@ -122,12 +122,12 @@ export default function Gallery() {
                 >
                   {/* Inner Content (The Image inside the locker) */}
                   <div className="absolute inset-0 bg-[#020B1C] border border-[#0a1e50] shadow-inner p-2 md:p-3 overflow-hidden">
-                    <img
-                      src={col.image_url || 'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=900&h=600&fit=crop&auto=format'}
+                    {col.image_url && <img
+                      src={col.image_url}
                       alt={col.name}
                       className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                       loading="lazy"
-                    />
+                    />}
                     {/* Inner locker details */}
                     <div className="absolute top-4 left-4 right-4 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                       <div className="label text-[#D71920] text-[0.6rem] bg-[#020B1C]/80 px-2 py-1 backdrop-blur-sm">{col.category}</div>

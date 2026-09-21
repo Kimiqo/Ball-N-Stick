@@ -60,6 +60,17 @@ export type TeamMember = {
   image_url?: string;
 };
 
+export type Project = {
+  id: string;
+  title: string;
+  cat: string;
+  desc: string;
+  status: string;
+  tall: boolean;
+  image_url?: string;
+  created_at?: string;
+};
+
 type AdminContextType = {
   user: AdminUser | null;
   isAuthenticated: boolean;

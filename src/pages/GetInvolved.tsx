@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { School, Users, Handshake, Heart, ArrowRight } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -51,6 +52,9 @@ const PATHWAYS = [
 ];
 
 export default function GetInvolved() {
+  const { settings } = useSettings();
+  const bgImage = settings.getinvolved_bg_image_url;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -62,10 +66,11 @@ export default function GetInvolved() {
       <section className="relative pt-32 md:pt-44 pb-20 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=1920&h=900&fit=crop&auto=format"
+            src={bgImage}
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover opacity-12"
+            className="w-full h-full object-cover opacity-15"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020B1C] via-[#020B1C]/80 to-[#020B1C]" />
         </div>
@@ -78,13 +83,13 @@ export default function GetInvolved() {
             <div className="label text-[#D71920] mb-4">Join the Movement</div>
             <h1
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-4xl"
-              style={{ fontSize: 'clamp(2.2rem, 8vw, 10rem)' }}
+              style={{ fontSize: 'clamp(2.2rem, 8vw, 6.5rem)' }}
             >
               Get
               <br />
               <span className="text-outline">Involved</span>
             </h1>
-            <p className="text-[#F5F7FA]/50 mt-7 max-w-md text-sm leading-relaxed">
+            <p className="text-[#F5F7FA]/70 mt-7 max-w-md text-sm leading-relaxed">
               There&apos;s a place for everyone in Ghana&apos;s hockey story. Find your pathway below and help us grow the game.
             </p>
           </motion.div>
@@ -118,7 +123,7 @@ export default function GetInvolved() {
                   >
                     {path.tagline}
                   </h2>
-                  <p className="text-[#F5F7FA]/50 text-sm leading-relaxed mb-7">{path.desc}</p>
+                  <p className="text-[#F5F7FA]/70 text-sm leading-relaxed mb-7">{path.desc}</p>
                   <Link
                     to="/contact"
                     className="inline-flex items-center gap-2 font-display font-bold text-[0.65rem] tracking-[0.2em] uppercase px-6 py-3 bg-[#D71920] text-[#F5F7FA] hover:bg-[#e02028] transition-colors"
@@ -160,7 +165,7 @@ export default function GetInvolved() {
             </h2>
           </Reveal>
           <Reveal delay={0.15}>
-            <p className="text-[#F5F7FA]/45 text-sm leading-relaxed max-w-sm mx-auto mb-8">
+            <p className="text-[#F5F7FA]/70 text-sm leading-relaxed max-w-sm mx-auto mb-8">
               Not sure which pathway is right for you? Get in touch and we&apos;ll help you find your place in Ghana&apos;s hockey community.
             </p>
           </Reveal>

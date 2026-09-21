@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Images, FileText, Users, Handshake, ArrowRight, AlertCircle, CheckCircle, Database } from 'lucide-react';
+import { Calendar, Images, FileText, Users, Handshake, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAdmin } from './AdminContext';
 import { api } from '../lib/api';
-import type { BSEvent, Story, GalleryCollection, Partner, TeamMember } from './AdminContext';
+import type { BSEvent, Story, GalleryCollection, Partner, TeamMember, Project } from './AdminContext';
 
 function StatCard({
   label, value, icon: Icon, to, accent = false,
@@ -50,6 +50,7 @@ export default function Dashboard() {
   const [gallery, setGallery] = useState<GalleryCollection[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [people, setPeople] = useState<TeamMember[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -57,7 +58,8 @@ export default function Dashboard() {
       api.stories.list().then(setStories),
       api.gallery.list().then(setGallery),
       api.partners.list().then(setPartners),
-      api.people.list().then(setPeople)
+      api.people.list().then(setPeople),
+      api.projects.list().then(setProjects)
     ]).catch(console.error);
   }, []);
 
@@ -79,15 +81,6 @@ export default function Dashboard() {
 
       {/* Alerts */}
       <div className="flex flex-col gap-2 mb-8">
-        <div className="flex items-center gap-3 bg-[#071A3D] border border-white/[0.06] px-4 py-3 text-xs">
-          <Database size={13} className="text-[#F5F7FA]/30 shrink-0" />
-          <span className="text-[#F5F7FA]/40">
-            Running in prototype mode — changes persist in browser storage.
-            Connect{' '}
-            <span className="text-[#F5F7FA]/65">Payload CMS</span>{' '}
-            to sync content with the live site.
-          </span>
-        </div>
 
         {unpublished > 0 && (
           <div className="flex items-center gap-3 bg-[#D71920]/8 border border-[#D71920]/20 px-4 py-3 text-xs">
@@ -110,12 +103,13 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
         <StatCard label="Events" value={events.length} icon={Calendar} to="/admin/events" accent />
         <StatCard label="Gallery Collections" value={gallery.length} icon={Images} to="/admin/gallery" />
         <StatCard label="Stories" value={stories.length} icon={FileText} to="/admin/stories" />
         <StatCard label="Team Members" value={people.length} icon={Users} to="/admin/people" />
         <StatCard label="Partners" value={partners.length} icon={Handshake} to="/admin/partners" />
+        <StatCard label="Projects" value={projects.length} icon={FileText} to="/admin/projects" />
       </div>
 
       {/* Detail panels */}

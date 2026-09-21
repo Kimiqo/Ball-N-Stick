@@ -99,12 +99,14 @@ export default function Events() {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
           <Reveal>
             <div className="relative overflow-hidden group h-[55vh] md:h-[65vh] bg-[#0a1e50]">
-              <img
-                src={featured.image_url || 'https://images.unsplash.com/photo-1613425295457-ff05c1b63e23?w=900&h=600&fit=crop&auto=format'}
-                alt={featured.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60"
-                loading="lazy"
-              />
+              {featured.image_url && (
+                <img
+                  src={featured.image_url}
+                  alt={featured.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60"
+                  loading="lazy"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C] via-[#020B1C]/30 to-transparent" />
 
               {/* Floating event badge */}
@@ -145,12 +147,14 @@ export default function Events() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: (i % 3) * 0.07 }}
               >
-                <img
-                  src={e.image_url || 'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=700&h=500&fit=crop&auto=format'}
-                  alt={e.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50"
-                  loading="lazy"
-                />
+                {e.image_url && (
+                  <img
+                    src={e.image_url}
+                    alt={e.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50"
+                    loading="lazy"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/95 via-[#020B1C]/20 to-transparent" />
 
                 {/* Floating abbr badge */}

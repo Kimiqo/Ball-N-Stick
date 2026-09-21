@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, ArrowRight } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -27,8 +28,12 @@ const SCHOOLS = Array.from({ length: 12 }, (_, i) => ({
 const REGIONS = ['All', 'Greater Accra', 'Ashanti', 'Central'];
 
 export default function Schools() {
+  const { settings } = useSettings();
   const [query, setQuery] = useState('');
   const [region, setRegion] = useState('All');
+
+  const heroImage = settings.schools_hero_image_url;
+  const midImage = settings.schools_mid_image_url;
 
   const filtered = SCHOOLS.filter(s => {
     const matchQuery = s.name.toLowerCase().includes(query.toLowerCase());
@@ -47,10 +52,11 @@ export default function Schools() {
       <section className="pt-32 md:pt-44 pb-16 relative overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=1920&h=700&fit=crop&auto=format"
+            src={heroImage}
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover opacity-10"
+            className="w-full h-full object-cover opacity-15"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020B1C] to-[#020B1C]" />
         </div>
@@ -63,13 +69,13 @@ export default function Schools() {
             <div className="label text-[#D71920] mb-4">School Network</div>
             <h1
               className="font-display font-black uppercase text-[#F5F7FA] leading-[0.86] max-w-3xl"
-              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 9rem)' }}
+              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 6rem)' }}
             >
               Partner
               <br />
               <span className="text-outline">Schools</span>
             </h1>
-            <p className="text-[#F5F7FA]/45 mt-6 max-w-md text-sm leading-relaxed">
+            <p className="text-[#F5F7FA]/70 mt-6 max-w-md text-sm leading-relaxed">
               Demo content — the school directory is managed through the CMS. The schools below are placeholder entries only.
             </p>
           </motion.div>
@@ -161,7 +167,7 @@ export default function Schools() {
               >
                 Join the Network
               </h2>
-              <p className="text-[#F5F7FA]/45 text-sm leading-relaxed mt-4 mb-7">
+              <p className="text-[#F5F7FA]/70 text-sm leading-relaxed mt-4 mb-7">
                 If you&apos;re a school interested in joining the Ball &amp; Stick Ghana network, we&apos;d love to hear from you.
               </p>
               <Link
@@ -175,7 +181,7 @@ export default function Schools() {
           <Reveal delay={0.1}>
             <div className="relative aspect-[4/3] overflow-hidden bg-[#0a1e50]">
               <img
-                src="https://images.unsplash.com/photo-1632215865645-3efa9af21424?w=800&h=600&fit=crop&auto=format"
+                src={midImage}
                 alt="School students"
                 className="w-full h-full object-cover"
                 loading="lazy"

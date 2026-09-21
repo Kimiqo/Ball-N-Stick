@@ -96,12 +96,12 @@ export default function Stories() {
             <Reveal>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="relative overflow-hidden aspect-[4/3] bg-[#0a1e50]">
-                  <img
-                    src={featured.image_url || 'https://images.unsplash.com/photo-1632215863153-0dae7657d0a9?w=800&h=500&fit=crop&auto=format'}
+                  {featured.image_url && <img
+                    src={featured.image_url}
                     alt={featured.title}
                     className="w-full h-full object-cover"
                     loading="lazy"
-                  />
+                  />}
                 </div>
                 <div>
                   <div className="label text-[#D71920] mb-3">{featured.category}</div>
@@ -137,12 +137,14 @@ export default function Stories() {
                 transition={{ delay: (i % 3) * 0.08, duration: 0.5 }}
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-[#0a1e50] mb-5">
-                  <img
-                    src={s.image_url || 'https://images.unsplash.com/photo-1613332738142-c79288f25e09?w=800&h=500&fit=crop&auto=format'}
-                    alt={s.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {s.image_url && (
+                    <img
+                      src={s.image_url}
+                      alt={s.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-[#020B1C]/20" />
                 </div>
                 <div className="label text-[#D71920] mb-2">{s.category}</div>

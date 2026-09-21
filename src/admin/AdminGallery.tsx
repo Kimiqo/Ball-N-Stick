@@ -19,6 +19,8 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
     try {
       const data = await api.galleryImages.list(collectionId);
       setImages(data);
+      // Auto-heal the image count
+      await api.gallery.update(collectionId, { image_count: data.length });
     } catch (e) {
       console.error(e);
     }
@@ -34,13 +36,17 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
     if (!files.length) return;
     
     setUploading(true);
+    let uploadedCount = 0;
     for (const file of files) {
       const url = await uploadImage(file);
       if (url) {
         await api.galleryImages.create(collectionId, url);
+        uploadedCount++;
       }
     }
-    await fetchImages();
+    const newImages = await api.galleryImages.list(collectionId);
+    setImages(newImages);
+    await api.gallery.update(collectionId, { image_count: newImages.length });
     onUpdate();
     setUploading(false);
   };
@@ -48,7 +54,9 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
   const handleDelete = async (id: string) => {
     try {
       await api.galleryImages.delete(id);
-      setImages(images.filter(img => img.id !== id));
+      const remaining = images.filter(img => img.id !== id);
+      setImages(remaining);
+      await api.gallery.update(collectionId, { image_count: remaining.length });
       onUpdate();
     } catch (e) {
       console.error(e);

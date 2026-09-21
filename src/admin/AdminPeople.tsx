@@ -61,12 +61,19 @@ export default function AdminPeople() {
   const saveEdit = async () => {
     if (!editing) return;
     try {
-      await api.people.update(editing.id, editing);
-      setPeople(people.map(p => p.id === editing.id ? editing : p));
+      if (editing.id) {
+        await api.people.update(editing.id, editing);
+        setPeople(people.map(p => p.id === editing.id ? editing : p));
+        flash('Team member updated');
+      } else {
+        const { id, ...newPerson } = editing as any;
+        const created = await api.people.create(newPerson);
+        setPeople([created, ...people]);
+        flash('Team member added');
+      }
       setEditing(null);
-      flash('Team member updated');
     } catch {
-      flash('Error updating');
+      flash('Error saving team member');
     }
   };
 
@@ -79,13 +86,22 @@ export default function AdminPeople() {
             {people.filter(p => p.name).length} named &middot; {people.filter(p => !p.name).length} TBC
           </p>
         </div>
-        <AnimatePresence>
-          {toast && (
-            <motion.span className="flex items-center gap-1.5 text-green-400 text-xs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <Check size={12} /> {toast}
-            </motion.span>
-          )}
-        </AnimatePresence>
+        <div className="flex items-center gap-4">
+          <AnimatePresence>
+            {toast && (
+              <motion.span className="flex items-center gap-1.5 text-green-400 text-xs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Check size={12} /> {toast}
+              </motion.span>
+            )}
+          </AnimatePresence>
+          <button
+            onClick={() => setEditing({ id: '', name: '', role: '', email: '', image_url: '' })}
+            className="font-display font-bold tracking-[0.18em] uppercase px-5 py-2.5 bg-[#D71920] text-[#F5F7FA] hover:bg-[#e02028] transition-colors"
+            style={{ fontSize: '0.65rem' }}
+          >
+            Add Team Member
+          </button>
+        </div>
       </div>
 
       {/* Note */}
