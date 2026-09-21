@@ -103,6 +103,34 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Idle timeout feature (30 minutes)
+  useEffect(() => {
+    if (!user) return; // Only track timeout if logged in
+
+    const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const handleActivity = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        // Auto logout due to inactivity
+        logout();
+      }, IDLE_TIMEOUT_MS);
+    };
+
+    // Set initial timeout
+    handleActivity();
+
+    // Listen to user interactions
+    const events = ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'];
+    events.forEach(e => window.addEventListener(e, handleActivity));
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach(e => window.removeEventListener(e, handleActivity));
+    };
+  }, [user]);
+
   const logout = async () => {
     await supabase.auth.signOut();
   };
