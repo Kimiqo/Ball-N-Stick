@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard, Calendar, Images, FileText,
+  LayoutDashboard, Calendar, Images, FileText, ShoppingBag,
   Handshake, Users, Settings, LogOut, ChevronRight, ExternalLink, Menu, X, CheckSquare
 } from 'lucide-react';
 import { useAdmin } from './AdminContext';
@@ -14,6 +14,7 @@ const NAV = [
   { label: 'Stories', icon: FileText, path: '/admin/stories' },
   { label: 'People', icon: Users, path: '/admin/people' },
   { label: 'Partners', icon: Handshake, path: '/admin/partners' },
+  { label: 'Shop', icon: ShoppingBag, path: '/admin/shop' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 
@@ -22,6 +23,12 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  useEffect(() => {
+    const handleError = (event: Event) => setUploadError((event as CustomEvent<string>).detail);
+    window.addEventListener('bs-upload-error', handleError);
+    return () => window.removeEventListener('bs-upload-error', handleError);
+  }, []);
 
   if (isLoading) {
     return <div className="min-h-screen bg-[#020B1C] flex items-center justify-center text-[#F5F7FA]">Loading...</div>;
@@ -143,6 +150,10 @@ export default function AdminLayout() {
 
         {/* Page content */}
         <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
+          <p className="text-xs text-white/50 mb-4">Images are automatically compressed before upload. Maximum stored size: 1 MB per image.</p>
+          {uploadError && <div role="alert" className="border border-red-400/50 bg-red-950 p-4 mb-4 flex items-center justify-between gap-4">
+            <span>{uploadError}</span><button aria-label="Dismiss upload error" onClick={() => setUploadError('')}><X size={18} /></button>
+          </div>}
           <Outlet />
         </main>
       </div>

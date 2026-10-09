@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { NEXTGEN_PROMOTION } from '../lib/promotion';
+import type { EventPromotion } from '../lib/promotion';
 import { api } from '../lib/api';
 
 // Define the type to match AdminSettings.tsx SiteSettings
 export type SiteSettings = {
+  event_promotion?: EventPromotion;
+  shop_url?: string;
   tagline: string;
   mission: string;
   phone1: string;
@@ -31,6 +35,8 @@ export type SiteSettings = {
 
 // We will use the same defaults from AdminSettings as fallback
 export const DEFAULTS: SiteSettings = {
+  event_promotion: NEXTGEN_PROMOTION,
+  shop_url: 'https://paystack.shop/ball-and-stick-shop',
   tagline: 'Action Imagined!!',
   mission: 'To promote Field Hockey across Ghana and Africa.',
   phone1: '0303 934 561',

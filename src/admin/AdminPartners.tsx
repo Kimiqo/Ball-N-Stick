@@ -6,9 +6,9 @@ import { api, uploadImage } from '../lib/api';
 
 type Draft = Omit<Partner, 'id'>;
 
-const EMPTY: Draft = { name: '', type: '', website: '', description: '', image_url: '' };
+const EMPTY: Draft = { category: 'partner', name: '', type: '', website: '', description: '', image_url: '' };
 
-const TYPES = ['Technical Partner', 'Equipment Partner', 'Title Sponsor', 'Event Sponsor', 'Media Partner', 'Strategic Partner', 'Other'];
+const TYPES = ['Technical Partner', 'Equipment Partner', 'Title Sponsor', 'Event Sponsor', 'Media Partner', 'Strategic Partner', 'School Partner', 'Sponsor', 'Other'];
 
 function PartnerForm({ data, onChange }: { data: Draft | Partner; onChange: (patch: Partial<Draft>) => void }) {
   const input = "w-full bg-white/[0.03] border border-white/[0.08] text-[#F5F7FA] placeholder-[#F5F7FA]/15 text-sm px-3 py-2.5 outline-none focus:border-[#D71920]/40 transition-colors";
@@ -25,6 +25,11 @@ function PartnerForm({ data, onChange }: { data: Draft | Partner; onChange: (pat
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <label className="text-sm text-white sm:col-span-2">Section
+        <select className={input} style={{ backgroundColor: '#020B1C' }} value={data.category || 'partner'} onChange={e => onChange({ category: e.target.value as Partner['category'] })}>
+          <option value="partner">Official partner</option><option value="school">School partner</option><option value="sponsor">Sponsor</option>
+        </select>
+      </label>
       <div>
         <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Partner Name</label>
         <input className={input} value={data.name} onChange={e => onChange({ name: e.target.value })} placeholder="Organisation name" />
@@ -151,7 +156,7 @@ export default function AdminPartners() {
         <AlertTriangle size={13} className="text-[#D71920]/60 shrink-0 mt-0.5" />
         <span className="text-[#F5F7FA]/35">
           Only add confirmed partners. Do not invent or guess partner organisations.
-          Current confirmed partners: <strong className="text-[#F5F7FA]/60">Act Global</strong> and <strong className="text-[#F5F7FA]/60">Harrow Sports</strong>.
+          Use the Section field to separate official partners, schools and sponsors.
         </span>
       </div>
 
@@ -206,7 +211,7 @@ export default function AdminPartners() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h2 className="font-display font-black uppercase text-[#F5F7FA] text-lg leading-none mb-1">{partner.name}</h2>
-                <div className="label text-[#D71920]" style={{ fontSize: '0.58rem' }}>{partner.type}</div>
+                <div className="label text-[#D71920]" style={{ fontSize: '0.58rem' }}>{partner.category || 'partner'} · {partner.type}</div>
               </div>
               <div className="flex items-center gap-2 ml-4">
                 <button onClick={() => { setEditing(partner); setCreating(false); }} className="text-[#F5F7FA]/25 hover:text-[#F5F7FA] transition-colors">

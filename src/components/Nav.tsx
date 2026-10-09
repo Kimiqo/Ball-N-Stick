@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import EventPopup from './EventPopup';
 import { Menu, X } from 'lucide-react';
 
 const NAV_LINKS = [
@@ -10,6 +11,7 @@ const NAV_LINKS = [
   { label: 'Events', href: '/events' },
   { label: 'People', href: '/people' },
   { label: 'Partners', href: '/partners' },
+  { label: 'Shop', href: '/shop' },
 ];
 
 export default function Nav() {
@@ -48,7 +50,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-7">
           {NAV_LINKS.map(link => (
             <NavLink
               key={link.href}
@@ -66,9 +68,10 @@ export default function Nav() {
 
         {/* CTA + mobile toggle */}
         <div className="flex items-center gap-3">
+          <EventPopup />
           <Link
             to="/get-involved"
-            className="hidden md:block font-display font-bold text-[0.65rem] tracking-[0.2em] uppercase px-5 py-2.5 bg-[#D71920] text-[#F5F7FA] hover:bg-[#e02028] transition-colors duration-200"
+            className="hidden xl:block font-display font-bold text-[0.65rem] tracking-[0.2em] uppercase px-5 py-2.5 bg-[#D71920] text-[#F5F7FA] hover:bg-[#e02028] transition-colors duration-200"
           >
             Get Involved
           </Link>

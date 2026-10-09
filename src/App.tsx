@@ -5,6 +5,8 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
+import Shop from './pages/Shop';
+import AdminShop from './admin/AdminShop';
 import Home from './pages/Home';
 import About from './pages/About';
 import WhatWeDo from './pages/WhatWeDo';
@@ -50,6 +52,7 @@ function AppRoutes() {
           <Route path="/people" element={<People />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/get-involved" element={<GetInvolved />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </AnimatePresence>
@@ -72,6 +75,7 @@ function AdminRoutes() {
           <Route path="/admin/stories" element={<AdminStories />} />
           <Route path="/admin/people" element={<AdminPeople />} />
           <Route path="/admin/partners" element={<AdminPartners />} />
+          <Route path="/admin/shop" element={<AdminShop />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
         </Route>
       </Routes>

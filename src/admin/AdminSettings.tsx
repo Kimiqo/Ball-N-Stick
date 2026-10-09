@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Globe, Mail, Phone, MapPin, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
+import PromotionSettings from './PromotionSettings';
+import { safePromotionLink } from '../lib/promotion';
 import { api, uploadImage } from '../lib/api';
 import { DEFAULTS, useSettings } from '../contexts/SettingsContext';
 import type { SiteSettings } from '../contexts/SettingsContext';
@@ -67,6 +69,11 @@ export default function AdminSettings() {
   const update = (patch: Partial<SiteSettings>) => setSettings(s => ({ ...s, ...patch }));
 
   const save = async () => {
+    const p = settings.event_promotion;
+    if (p?.enabled && (!p.title.trim() || !p.image_url || (p.link && !safePromotionLink(p.link)) || !Number.isFinite(Date.parse(p.ends_at)) || Date.parse(p.ends_at) <= Date.now() || (p.starts_at && (!Number.isFinite(Date.parse(p.starts_at)) || Date.parse(p.starts_at) >= Date.parse(p.ends_at))))) {
+      flash('Add a title, flyer, valid optional link and future expiry after the start time.');
+      return;
+    }
     try {
       await api.settings.update(settings);
       flash('Settings saved');
@@ -133,6 +140,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
+      <PromotionSettings value={settings.event_promotion} onChange={event_promotion => update({ event_promotion })} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Brand */}
         <section>

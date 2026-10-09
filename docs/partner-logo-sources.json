@@ -1,0 +1,121 @@
+[
+  {
+    "name": "Association International School",
+    "website": "https://ais.edu.gh/",
+    "category": "school",
+    "source": "https://ais.edu.gh/wp-content/uploads/2023/06/AIS-international-school-Logo-crest-2.jpg",
+    "image_url": "/partners/school-0.jpg"
+  },
+  {
+    "name": "Akosombo International School",
+    "website": "https://vraschools.com/",
+    "category": "school",
+    "source": "",
+    "image_url": ""
+  },
+  {
+    "name": "Canadian Independent College",
+    "website": "https://ghanacic.com/",
+    "category": "school",
+    "source": "https://ghanacic.com/wp-content/uploads/2025/10/cropped-Untitled-design.png",
+    "image_url": "/partners/school-2.png"
+  },
+  {
+    "name": "East Airport International School",
+    "website": "https://eais-edu.com/",
+    "category": "school",
+    "source": "https://eais-edu.com/wp-content/uploads/2021/07/newlogo.png",
+    "image_url": "/partners/school-3.png"
+  },
+  {
+    "name": "Hope College",
+    "website": "https://www.hopecollege.edu.gh/",
+    "category": "school",
+    "source": "https://static.wixstatic.com/media/368a8d_29b08a4361c443638cb84619f8cd38cf~mv2.jpeg",
+    "image_url": "/partners/school-4.jpeg"
+  },
+  {
+    "name": "Galaxy International School",
+    "website": "https://galaxy.edu.gh/",
+    "category": "school",
+    "source": "https://galaxy.edu.gh/uploads/frontend/images/logo1.png?v=527422918bf341553f6b30608477f279",
+    "image_url": "/partners/school-5.png"
+  },
+  {
+    "name": "Legacy Girls’ College",
+    "website": "https://www.lgc.edu.gh/",
+    "category": "school",
+    "source": "https://www.lgc.edu.gh/wp-content/uploads/2024/11/logo.jpg",
+    "image_url": "/partners/school-6.jpg"
+  },
+  {
+    "name": "Lincoln Community School",
+    "website": "https://www.lincoln.edu.gh/",
+    "category": "school",
+    "source": "https://www.lincoln.edu.gh/wp-content/uploads/2025/08/logo_color_22-01-scaled.png",
+    "image_url": "/partners/school-7.png"
+  },
+  {
+    "name": "SOS Hermann Gmeiner College",
+    "website": "https://www.soshgic.edu.gh/",
+    "category": "school",
+    "source": "https://soshgic.edu.gh/wp-content/uploads/2025/10/sos-logo-for-portals.png",
+    "image_url": "/partners/school-8.png"
+  },
+  {
+    "name": "Life International College",
+    "website": "https://lic.edu.gh/",
+    "category": "school",
+    "source": "https://lic.edu.gh/wp-content/uploads/2021/11/logo.jpg",
+    "image_url": "/partners/school-9.jpg"
+  },
+  {
+    "name": "Tema International School",
+    "website": "https://www.tis.edu.gh/",
+    "category": "school",
+    "source": "https://www.tis.edu.gh/wp-content/uploads/2023/08/tis-logo-1.png",
+    "image_url": "/partners/school-10.png"
+  },
+  {
+    "name": "Academic City University",
+    "website": "https://acity.edu.gh/",
+    "category": "school",
+    "source": "https://acity.edu.gh/wp-content/uploads/2025/01/acity-logo-new-448x129.png",
+    "image_url": "/partners/school-11.png"
+  },
+  {
+    "name": "Ashesi University",
+    "website": "https://ashesi.edu.gh/",
+    "category": "school",
+    "source": "https://ashesi.edu.gh/wp-content/uploads/2024/05/Ashesi_University_Logo-5.webp",
+    "image_url": "/partners/school-12.webp"
+  },
+  {
+    "name": "GIMPA",
+    "website": "https://gimpa.edu.gh/",
+    "category": "school",
+    "source": "https://gimpa.edu.gh/wp-content/uploads/2022/08/gimpa-1024x297.png",
+    "image_url": "/partners/school-13.png"
+  },
+  {
+    "name": "University of Ghana",
+    "website": "https://www.ug.edu.gh/",
+    "category": "school",
+    "source": "https://www.ug.edu.gh/themes/custom/ugtheme/logo.svg",
+    "image_url": "/partners/school-14.svg"
+  },
+  {
+    "name": "Verna",
+    "website": "https://twellium.com/verna-mineral-water/",
+    "category": "sponsor",
+    "source": "",
+    "image_url": ""
+  },
+  {
+    "name": "Choco",
+    "website": "",
+    "category": "sponsor",
+    "source": "",
+    "image_url": ""
+  }
+]

@@ -1,17 +1,21 @@
+import { compressImage } from './compressImage';
 import { supabase } from './supabase';
 
 export async function uploadImage(file: File): Promise<string | null> {
-  const ext = file.name.split('.').pop();
-  const fileName = `${Math.random()}.${ext}`;
-  const { error } = await supabase.storage.from('bs-images').upload(fileName, file);
-  
-  if (error) {
+  try {
+    const compressed = await compressImage(file);
+    const extensions: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/svg+xml': 'svg' };
+    const fileName = `${crypto.randomUUID()}.${extensions[compressed.type]}`;
+    const { error } = await supabase.storage.from('bs-images').upload(fileName, compressed, { contentType: compressed.type });
+    if (error) throw error;
+    const { data } = supabase.storage.from('bs-images').getPublicUrl(fileName);
+    return data.publicUrl;
+  } catch (error) {
     console.error('Error uploading image:', error);
+    const message = error instanceof Error ? error.message : 'Image upload failed. Check your storage permissions and quota, then try again.';
+    window.dispatchEvent(new CustomEvent('bs-upload-error', { detail: message }));
     return null;
   }
-  
-  const { data: publicUrlData } = supabase.storage.from('bs-images').getPublicUrl(fileName);
-  return publicUrlData.publicUrl;
 }
 
 export const api = {

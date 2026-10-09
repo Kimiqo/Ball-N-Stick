@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { api } from '../lib/api';
+import type { Partner } from '../admin/AdminContext';
+import PartnerSection from '../components/PartnerSection';
 import { Search, ArrowRight } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
 
@@ -17,29 +20,21 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-// Demo schools — replace with CMS content
-const SCHOOLS = Array.from({ length: 12 }, (_, i) => ({
-  name: `Partner School ${String.fromCharCode(65 + i)}`,
-  region: i < 6 ? 'Greater Accra' : i < 9 ? 'Ashanti' : 'Central',
-  level: i % 3 === 0 ? 'Secondary' : i % 3 === 1 ? 'Primary' : 'International',
-  since: `Year ${i + 1}`,
-}));
-
-const REGIONS = ['All', 'Greater Accra', 'Ashanti', 'Central'];
-
 export default function Schools() {
   const { settings } = useSettings();
   const [query, setQuery] = useState('');
-  const [region, setRegion] = useState('All');
+  const [schools, setSchools] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    api.partners.list().then(data => setSchools(data.filter(p => p.category === 'school')))
+      .catch(() => setError(true)).finally(() => setLoading(false));
+  }, []);
 
   const heroImage = settings.schools_hero_image_url;
   const midImage = settings.schools_mid_image_url;
 
-  const filtered = SCHOOLS.filter(s => {
-    const matchQuery = s.name.toLowerCase().includes(query.toLowerCase());
-    const matchRegion = region === 'All' || s.region === region;
-    return matchQuery && matchRegion;
-  });
+  const filtered = schools.filter(s => s.name.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
     <motion.div
@@ -96,22 +91,7 @@ export default function Schools() {
               className="w-full bg-white/[0.04] border border-white/[0.08] text-[#F5F7FA] placeholder-[#F5F7FA]/25 text-sm pl-9 pr-4 py-2.5 outline-none focus:border-[#D71920]/50 transition-colors"
             />
           </div>
-          {/* Region filter */}
-          <div className="flex gap-2 flex-wrap">
-            {REGIONS.map(r => (
-              <button
-                key={r}
-                onClick={() => setRegion(r)}
-                className={`label text-[0.62rem] px-4 py-2 border transition-colors ${
-                  region === r
-                    ? 'bg-[#D71920] border-[#D71920] text-[#F5F7FA]'
-                    : 'border-white/[0.08] text-[#F5F7FA]/40 hover:text-[#F5F7FA] hover:border-white/20'
-                }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
+
         </div>
       </section>
 
@@ -121,33 +101,11 @@ export default function Schools() {
           <div className="label text-[#F5F7FA]/25 mb-6 text-[0.62rem]">
             {filtered.length} school{filtered.length !== 1 ? 's' : ''} found
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-            {filtered.map((s, i) => (
-              <motion.div
-                key={s.name}
-                className="bg-[#0a1e50] border border-white/[0.05] p-6 hover:border-[#D71920]/30 transition-colors group"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.04, duration: 0.4 }}
-              >
-                <div className="w-12 h-12 bg-white/[0.04] border border-white/[0.06] flex items-center justify-center mb-5">
-                  <span className="font-display font-black text-[#D71920] text-xl">
-                    {s.name[0]}
-                  </span>
-                </div>
-                <h3 className="font-display font-black uppercase text-[#F5F7FA] text-lg leading-tight mb-2 group-hover:text-[#D71920] transition-colors">
-                  {s.name}
-                </h3>
-                <div className="flex flex-col gap-1.5 mt-3">
-                  <span className="label text-[#F5F7FA]/30 text-[0.6rem]">{s.region}</span>
-                  <span className="label text-[#F5F7FA]/30 text-[0.6rem]">{s.level}</span>
-                </div>
-                <div className="mt-4 h-px w-0 group-hover:w-full bg-[#D71920]/20 transition-all duration-500" />
-              </motion.div>
-            ))}
-          </div>
+          {loading && <p role="status" className="text-white">Loading schools…</p>}
+          {error && <p role="alert" className="text-white">Schools could not be loaded. Please refresh to try again.</p>}
+          <PartnerSection title="School Partners" partners={filtered} />
 
-          {filtered.length === 0 && (
+          {!loading && !error && filtered.length === 0 && (
             <div className="text-center py-20 text-[#F5F7FA]/30 text-sm">
               No schools match your search.
             </div>

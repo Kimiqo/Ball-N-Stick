@@ -43,7 +43,10 @@ export type Story = {
   image_url?: string;
 };
 
+export type PartnerCategory = 'partner' | 'school' | 'sponsor';
+
 export type Partner = {
+  category?: PartnerCategory;
   id: string;
   name: string;
   type: string;

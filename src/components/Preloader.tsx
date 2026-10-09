@@ -33,6 +33,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
     <AnimatePresence>
       {loading && (
         <motion.div
+          data-site-preloader
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
           exit={{ opacity: 0, y: '-100%' }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}

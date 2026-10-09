@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import PartnerSection from '../components/PartnerSection';
 import { api } from '../lib/api';
 import { useSettings } from '../contexts/SettingsContext';
 import type { Partner } from '../admin/AdminContext';
@@ -29,6 +30,7 @@ const PARTNERSHIP_TYPES = [
 export default function Partners() {
   const { settings } = useSettings();
   const [partners, setPartners] = useState<Partner[]>([]);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const bgImage = settings.partners_bg_image_url;
@@ -39,7 +41,8 @@ export default function Partners() {
         setPartners(data);
         setLoading(false);
       })
-      .catch(console.error);
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -77,41 +80,10 @@ export default function Partners() {
         </div>
       </section>
 
-      {/* Official partners */}
-      <section className="py-20 md:py-28 bg-[#071A3D]">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
-          <Reveal>
-            <div className="label text-[#D71920] mb-10">Official Partners</div>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {partners.map((p, i) => (
-              <motion.div
-                key={p.name}
-                className="bg-[#0a1e50] border border-white/[0.06] p-8 md:p-10 hover:border-[#D71920]/25 transition-colors group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.55 }}
-              >
-                {p.image_url ? (
-                  <div className="w-16 h-16 bg-white/[0.03] flex items-center justify-center mb-6 rounded-full overflow-hidden border border-white/[0.08] group-hover:border-[#D71920]/30 transition-colors">
-                    <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
-                  </div>
-                ) : (
-                  <div className="w-16 h-16 border border-white/[0.08] bg-white/[0.03] flex items-center justify-center mb-6 group-hover:border-[#D71920]/30 transition-colors">
-                    <span className="font-display font-black text-[#D71920] text-2xl">{p.name ? p.name[0] : '?'}</span>
-                  </div>
-                )}
-                <div className="label text-[#D71920] mb-2">{p.type}</div>
-                <h3 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-4" style={{ fontSize: 'clamp(1.3rem, 3vw, 2.8rem)' }}>
-                  {p.name}
-                </h3>
-                <p className="text-[#F5F7FA]/70 text-sm leading-relaxed">{p.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {error && <p role="alert" className="text-center text-white p-8">Partners could not be loaded. Please refresh to try again.</p>}
+      <PartnerSection title="Official Partners" partners={partners.filter(p => !p.category || p.category === 'partner')} />
+      <PartnerSection title="School Partners" description="Schools, colleges and universities growing the game with Ball & Stick." partners={partners.filter(p => p.category === 'school')} />
+      <PartnerSection title="Sponsors" description="Supporting our events and the future of Ghanaian hockey." partners={partners.filter(p => p.category === 'sponsor')} />
 
       {/* Partnership opportunities */}
       <section className="py-20 md:py-24">
