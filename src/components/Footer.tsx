@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useSettings } from '../contexts/SettingsContext';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const LINKS = {
@@ -24,6 +25,7 @@ const LINKS = {
 };
 
 export default function Footer() {
+  const { settings } = useSettings();
   return (
     <footer className="bg-[#020B1C] border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
@@ -40,20 +42,22 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-[#F5F7FA]/40 text-sm leading-relaxed max-w-[240px] mb-6">
-              Action Imagined!! — Promoting Field Hockey across Ghana and Africa.
+              {settings.tagline} — Promoting Field Hockey across Ghana and Africa.
             </p>
 
             {/* Contact details */}
             <div className="flex flex-col gap-2.5">
-              <a href="tel:+23303034934561" className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
-                <Phone size={11} className="text-[#D71920] shrink-0" /> 0303 934 561
-              </a>
-              <a href="mailto:kojo@ballandstick.com" className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
-                <Mail size={11} className="text-[#D71920] shrink-0" /> kojo@ballandstick.com
+              {[settings.phone1, settings.phone2].filter(Boolean).map((phone, index) => (
+                <a key={index} href={`tel:${phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
+                  <Phone size={11} className="text-[#D71920] shrink-0" /> {phone}
+                </a>
+              ))}
+              <a href={`mailto:${settings.emailGeneral}`} className="flex items-center gap-2 text-xs text-[#F5F7FA]/35 hover:text-[#F5F7FA]/60 transition-colors">
+                <Mail size={11} className="text-[#D71920] shrink-0" /> {settings.emailGeneral}
               </a>
               <span className="flex items-start gap-2 text-xs text-[#F5F7FA]/25">
                 <MapPin size={11} className="text-[#D71920] shrink-0 mt-0.5" />
-                No. 10 Hospital Street, Spintex Road, Accra
+                {settings.addressStreet}, {settings.addressCity}
               </span>
             </div>
           </div>
@@ -84,7 +88,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-5">
             <p className="label text-[#F5F7FA]/18 text-[0.62rem]">
-              P.O BOX KA 16379, Airport-Accra
+              {settings.addressPostal}
             </p>
             <a href="/admin" className="label text-[#F5F7FA]/12 hover:text-[#F5F7FA]/35 transition-colors text-[0.58rem] tracking-widest uppercase">
               Admin

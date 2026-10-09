@@ -5,7 +5,9 @@ import { useSettings } from '../contexts/SettingsContext';
 import { promotionIsActive, safePromotionLink } from '../lib/promotion';
 import type { EventPromotion } from '../lib/promotion';
 
-const DELAY_MS = 15_000;
+const DELAY_MS = 5_000;
+// Memory resets on a full reload; navigating between public routes keeps the flyer minimised.
+const presentedCampaigns = new Set<string>();
 
 function Campaign({ promotion, visitedAt }: { promotion: EventPromotion; visitedAt: number }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -28,8 +30,7 @@ function Campaign({ promotion, visitedAt }: { promotion: EventPromotion; visited
   useEffect(() => {
     const element = dialog.current;
     if (!element) return;
-    let presented = false;
-    try { presented = sessionStorage.getItem(key) === 'seen'; } catch { /* Private browsing may disable storage. */ }
+    let presented = presentedCampaigns.has(key);
     const restore = () => {
       if (previousOverflow.current !== null) {
         document.body.style.overflow = previousOverflow.current;
@@ -46,14 +47,11 @@ function Campaign({ promotion, visitedAt }: { promotion: EventPromotion; visited
       if (!active && element.open) element.close();
       if (!ready || presented || document.querySelector('[data-site-preloader]')) return;
       presented = true;
-      try { sessionStorage.setItem(key, 'seen'); } catch { /* Keep the in-memory state. */ }
-      // Mobile starts minimised. Resizing later must not unexpectedly open a modal.
-      if (window.matchMedia('(min-width: 1024px)').matches) {
-        previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        previousOverflow.current = document.body.style.overflow;
-        element.showModal();
-        document.body.style.overflow = 'hidden';
-      }
+      presentedCampaigns.add(key);
+      previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      previousOverflow.current = document.body.style.overflow;
+      element.showModal();
+      document.body.style.overflow = 'hidden';
     };
     const timer = window.setInterval(tick, 250);
     return () => { clearInterval(timer); element.close(); restore(); element.removeEventListener('close', restore); };
@@ -82,7 +80,7 @@ function Campaign({ promotion, visitedAt }: { promotion: EventPromotion; visited
 
 export default function EventPopup() {
   const { settings, loading } = useSettings();
-  const [visitedAt] = useState(() => Date.now());
+  const [visitedAt] = useState(() => performance.timeOrigin);
   const promotion = settings.event_promotion;
   if (loading || !promotion) return null;
   return <Campaign key={JSON.stringify(promotion)} promotion={promotion} visitedAt={visitedAt} />;

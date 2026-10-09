@@ -82,8 +82,8 @@ export default function Partners() {
 
       {error && <p role="alert" className="text-center text-white p-8">Partners could not be loaded. Please refresh to try again.</p>}
       <PartnerSection title="Official Partners" partners={partners.filter(p => !p.category || p.category === 'partner')} />
+      <PartnerSection title="Corporate Sponsors" description="Supporting our events and the future of Ghanaian hockey." partners={partners.filter(p => p.category === 'sponsor')} />
       <PartnerSection title="School Partners" description="Schools, colleges and universities growing the game with Ball & Stick." partners={partners.filter(p => p.category === 'school')} />
-      <PartnerSection title="Sponsors" description="Supporting our events and the future of Ghanaian hockey." partners={partners.filter(p => p.category === 'sponsor')} />
 
       {/* Partnership opportunities */}
       <section className="py-20 md:py-24">

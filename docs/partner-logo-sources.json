@@ -112,10 +112,31 @@
     "image_url": ""
   },
   {
-    "name": "Choco",
-    "website": "",
+    "name": "Top Choco",
+    "website": "https://topchoco.com.gh/",
     "category": "sponsor",
+    "source": "https://topchoco.com.gh/wp-content/uploads/2021/11/logo.svg",
+    "image_url": "/partners/top-choco.svg"
+  },
+  {
+    "name": "Flora Tissues",
+    "category": "sponsor",
+    "website": "https://deltapapermill.com/products/",
     "source": "",
     "image_url": ""
+  },
+  {
+    "name": "Act Global",
+    "category": "partner",
+    "website": "https://www.actglobal.com/",
+    "source": "https://www.actglobal.com/wp-content/uploads/2020/09/logo.png",
+    "image_url": "/partners/act-global.png"
+  },
+  {
+    "name": "Harrow Sports",
+    "category": "partner",
+    "website": "https://www.harrowsports.com/",
+    "source": "https://www.harrowsports.com/cdn/shop/files/Harrow_w_Eye_-_White.png?v=1750349764&width=540",
+    "image_url": "/partners/harrow-sports.png"
   }
 ]

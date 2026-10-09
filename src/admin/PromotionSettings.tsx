@@ -10,7 +10,7 @@ export default function PromotionSettings({ value = EMPTY_PROMOTION, onChange }:
   const update = (patch: Partial<EventPromotion>) => onChange({ ...value, ...patch });
   return <section className="border border-white/15 p-6 mb-8 text-white">
     <h2 className="font-display font-bold text-2xl mb-3">Event flyer popup</h2>
-    <p className="text-sm text-white/60 mb-5">Desktop: opens after 15 seconds, once per session, then minimises into the header. Mobile: a floating button appears after 15 seconds; tap to open. Upload a flyer and set an expiry before enabling. Times use UTC (Ghana time). Save Settings to publish changes.</p>
+    <p className="text-sm text-white/60 mb-5">Opens after 5 seconds on desktop and mobile, on every full page reload (after the intro finishes). Minimise to the header on desktop or a floating button on mobile. Upload a flyer and set an expiry before enabling. Times use UTC (Ghana time). Save Settings to publish changes.</p>
     <label className="flex gap-3 mb-5"><input type="checkbox" checked={value.enabled} onChange={e => update({ enabled: e.target.checked })} /> Enable event popup</label>
     <div className="grid sm:grid-cols-2 gap-5">
       <label>Event title<input className={field} value={value.title} onChange={e => update({ title: e.target.value })} /></label>

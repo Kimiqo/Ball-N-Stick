@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { OFFICIAL_PARTNER_BRANDS } from '../lib/partnerPresentation';
 import { useSettings } from '../contexts/SettingsContext';
 
 /* ── Animated counter ── */
@@ -498,17 +499,17 @@ export default function Home() {
             <div className="label text-[#F5F7FA]/20 mb-8 text-center">Trusted Partners</div>
           </Reveal>
           <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
-            {['Act Global', 'Harrow Sports'].map((partner, i) => (
+            {OFFICIAL_PARTNER_BRANDS.map((partner, i) => (
               <motion.div
-                key={partner}
-                className="float-card px-8 py-4 hover:border-[#D71920]/30 transition-colors"
+                key={partner.name}
+                className={`float-card px-8 py-4 hover:border-[#D71920]/30 transition-colors ${partner.dark ? 'bg-[#020B1C]' : 'bg-white'}`}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
                 whileHover={{ y: -3 }}
               >
-                <span className="font-display font-black uppercase text-[#F5F7FA]/50 tracking-wider text-sm">{partner}</span>
+                <img src={partner.image_url} alt={`${partner.name} logo`} loading="lazy" className="h-14 w-44 object-contain" />
               </motion.div>
             ))}
           </div>
