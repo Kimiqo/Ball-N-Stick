@@ -10,8 +10,9 @@
     "name": "Akosombo International School",
     "website": "https://vraschools.com/",
     "category": "school",
-    "source": "",
-    "image_url": ""
+    "source": "User-supplied: AIS logo.webp",
+    "image_url": "/partners/akosombo-international.webp",
+    "verification": "Akosombo is a VRA International School: https://vra.com/about_us/vra_schools.php"
   },
   {
     "name": "Canadian Independent College",
@@ -94,8 +95,8 @@
     "name": "GIMPA",
     "website": "https://gimpa.edu.gh/",
     "category": "school",
-    "source": "https://gimpa.edu.gh/wp-content/uploads/2022/08/gimpa-1024x297.png",
-    "image_url": "/partners/school-13.png"
+    "source": "User-supplied: GIMPA-1536x450-1.png",
+    "image_url": "/partners/gimpa.webp"
   },
   {
     "name": "University of Ghana",
@@ -108,8 +109,8 @@
     "name": "Verna",
     "website": "https://twellium.com/verna-mineral-water/",
     "category": "sponsor",
-    "source": "",
-    "image_url": ""
+    "source": "User-supplied: IMG_5622.PNG",
+    "image_url": "/partners/verna.webp"
   },
   {
     "name": "Top Choco",
@@ -122,8 +123,8 @@
     "name": "Flora Tissues",
     "category": "sponsor",
     "website": "https://deltapapermill.com/products/",
-    "source": "",
-    "image_url": ""
+    "source": "User-supplied: FLORA_TISSUES.pdf (page 1, cropped rendered artwork)",
+    "image_url": "/partners/flora-tissues.webp"
   },
   {
     "name": "Act Global",
@@ -138,5 +139,12 @@
     "website": "https://www.harrowsports.com/",
     "source": "https://www.harrowsports.com/cdn/shop/files/Harrow_w_Eye_-_White.png?v=1750349764&width=540",
     "image_url": "/partners/harrow-sports.png"
+  },
+  {
+    "name": "Field Hockey Canada",
+    "category": "partner",
+    "website": "https://fieldhockey.ca/",
+    "source": "User-supplied: Field Hockey Canada.webp",
+    "image_url": "/partners/field-hockey-canada.webp"
   }
 ]

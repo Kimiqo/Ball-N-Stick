@@ -10,6 +10,8 @@ Browser smoke tests: open /tests/image-compression.html with Vite running. Check
 
 ## Existing files
 
+For the requested full bs-images reset and re-upload, follow [reset-image-bucket.md](reset-image-bucket.md). Its migration configures the upload cap; its Storage API script removes actual files; the separate one-time SQL clears dead references after the bucket is verified empty.
+
 The screenshot reports an organisation-wide billing-period average of 1.40 GB, not necessarily current bs-images usage. Select the affected project and run storage-cleanup.sql in its SQL Editor to identify current bucket totals and the largest 50 objects. Do not assume every file is an image or belongs to this website.
 
 1. Download original copies of candidate files for a local backup.
