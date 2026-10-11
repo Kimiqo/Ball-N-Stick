@@ -75,6 +75,9 @@ export default function People() {
               <div className="label text-[#D71920] mb-4">{ceo.role}</div>
               <h2 className="font-display font-black uppercase text-white leading-tight mb-6" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>{ceo.name?.trim() || 'Name to be confirmed'}</h2>
               <div className="divider mb-6" />
+              <p className="text-[#F5F7FA]/50 text-sm leading-relaxed mb-6">
+                Ball &amp; Stick Ghana was founded with a passion for excellence in the Field Hockey fraternity and an ambition to grow the sport across Africa.
+              </p>
               <ProfileDetails member={ceo} />
             </Reveal>
           </div>
