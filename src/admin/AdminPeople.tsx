@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Edit2, X, Check, Mail, Upload } from 'lucide-react';
 import type { TeamMember } from './AdminContext';
 import { api, uploadImage } from '../lib/api';
+import { orderPeople } from '../lib/peoplePresentation';
 
 type Draft = Omit<TeamMember, 'id'>;
 
@@ -63,12 +64,12 @@ export default function AdminPeople() {
     try {
       if (editing.id) {
         await api.people.update(editing.id, editing);
-        setPeople(people.map(p => p.id === editing.id ? editing : p));
+        setPeople(orderPeople(people.map(p => p.id === editing.id ? editing : p)));
         flash('Team member updated');
       } else {
         const { id, ...newPerson } = editing as any;
         const created = await api.people.create(newPerson);
-        setPeople([created, ...people]);
+        setPeople(orderPeople([created, ...people]));
         flash('Team member added');
       }
       setEditing(null);

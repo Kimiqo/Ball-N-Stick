@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
+import { isCeo } from '../lib/peoplePresentation';
 import type { TeamMember } from '../admin/AdminContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -33,7 +34,7 @@ export default function People() {
     return <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-white">Loading...</div>;
   }
 
-  const ceo = people.find(p => p.role.includes('Chief Executive Officer') || p.role.includes('CEO'));
+  const ceo = people.find(isCeo);
 
   return (
     <motion.div
@@ -67,7 +68,7 @@ export default function People() {
               {ceo?.image_url && <img
                 src={ceo.image_url}
                 alt={ceo.name || "Kojo Lumour Ameye"}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />}
               <div className="absolute inset-0 bg-gradient-to-t from-[#071A3D] via-[#071A3D]/20 to-transparent md:hidden" />
@@ -154,7 +155,7 @@ export default function People() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                {src && <img src={src} alt="Team member" className="w-full h-full object-cover grayscale opacity-60" loading="lazy" />}
+                {src && <img src={src} alt="Team member" className="w-full h-full object-cover" loading="lazy" />}
               </motion.div>
             ))}
           </div>

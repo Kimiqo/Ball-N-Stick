@@ -1,6 +1,7 @@
 import { compressImage } from './compressImage';
 import { supabase } from './supabase';
 import { orderEvents } from './eventPresentation';
+import { orderPeople } from './peoplePresentation';
 
 export async function uploadImageOrThrow(file: File): Promise<string> {
   const compressed = await compressImage(file);
@@ -130,7 +131,7 @@ export const api = {
     async list() {
       const { data, error } = await supabase.from('bs_people').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      return data || [];
+      return orderPeople(data || []);
     },
     async create(item: any) {
       const { data, error } = await supabase.from('bs_people').insert([item]).select().single();
