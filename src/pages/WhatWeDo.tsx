@@ -25,7 +25,7 @@ const SERVICES = [
   { n: '05', title: 'Sponsorship Consultancy', desc: 'Connecting hockey programmes and events with corporate partners and sponsors who believe in the power of sport.' },
   { n: '06', title: 'Hockey Youth Empowerment', desc: 'Using field hockey as a vehicle for youth development, leadership, life skills, and community empowerment.' },
   { n: '07', title: 'Equipment Sales & Marketing', desc: 'Supplying and marketing quality hockey equipment to schools, clubs, and individuals across Ghana.' },
-  { n: '08', title: 'Hockey Street Save (HOSS)', desc: 'Bringing hockey to street communities — using the sport as a tool to reach and positively impact young people at the grassroots level.' },
+  { n: '08', title: 'WOMA', desc: 'One of Ball & Stick’s hockey programmes.' },
 ];
 
 const DEFAULT_ARMS = [

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { api } from '../lib/api';
+import { isNextGenEvent } from '../lib/eventPresentation';
 import type { BSEvent } from '../admin/AdminContext';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -64,7 +65,7 @@ export default function Events() {
     );
   }
 
-  const featured = events.find(e => e.featured) || events[0];
+  const featured = events.find(isNextGenEvent) || events.find(e => e.featured) || events[0];
   const rest = events.filter(e => e !== featured);
 
   return (

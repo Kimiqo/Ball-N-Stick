@@ -4,7 +4,7 @@ import { X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { api } from '../lib/api';
 import type { GalleryCollection } from '../admin/AdminContext';
 
-const CATS = ['All', 'HYES', 'HITMALL', 'HOSS', 'Events', 'Training', 'Schools', 'Community', 'Matches'];
+const CATS = ['All', 'HYES', 'HITMALL', 'WOMA', 'Events', 'Training', 'Schools', 'Community', 'Matches'];
 
 export default function Gallery() {
   const [activeCat, setActiveCat] = useState('All');
@@ -28,7 +28,7 @@ export default function Gallery() {
 
   const filtered = activeCat === 'All'
     ? collections
-    : collections.filter(c => c.category === activeCat || (activeCat === 'Events' && ['HITMALL', 'HYES', 'HOSS', 'Engage ST', 'H Fair', 'Around 16', 'YCM', 'Engage CS', 'SBC', 'WOMA', 'M&M', 'YOU'].includes(c.category)));
+    : collections.filter(c => c.category === activeCat || (activeCat === 'Events' && ['HITMALL', 'HYES', 'WOMA', 'Engage ST', 'H Fair', 'Around 16', 'YCM', 'Engage CS', 'SBC', 'M&M', 'YOU'].includes(c.category)));
 
   const openLightbox = async (col: GalleryCollection) => {
     setActiveCollection(col);

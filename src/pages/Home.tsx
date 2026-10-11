@@ -452,7 +452,7 @@ export default function Home() {
                 {/* Floating event card */}
                 <FloatCard delay={0.3} rotate={2} className="absolute top-5 right-5 min-w-[140px]">
                   <div className="label text-[#D71920] mb-1 text-[0.58rem]">Signature Event</div>
-                  <div className="font-display font-bold uppercase text-[#F5F7FA] text-sm">HITMALL</div>
+                  <div className="font-display font-bold uppercase text-[#F5F7FA] text-sm">{featuredEvent.abbr || featuredEvent.title}</div>
                 </FloatCard>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="label text-[#D71920] mb-2">{featuredEvent.title || 'Hockey in the Mall'}</div>
@@ -463,7 +463,7 @@ export default function Home() {
               </div>
             </Reveal>
             <div className="flex flex-col gap-2">
-              {events.slice(0, 3).map((e, i) => (
+              {events.slice(1, 4).map((e, i) => (
                 <motion.div
                   key={e.abbr}
                   className="flex items-center gap-5 p-5 bg-[#071A3D]/60 border border-white/[0.05] hover:border-[#D71920]/25 transition-colors group"

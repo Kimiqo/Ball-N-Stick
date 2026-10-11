@@ -1,5 +1,6 @@
 import { compressImage } from './compressImage';
 import { supabase } from './supabase';
+import { orderEvents } from './eventPresentation';
 
 export async function uploadImageOrThrow(file: File): Promise<string> {
   const compressed = await compressImage(file);
@@ -26,7 +27,7 @@ export const api = {
     async list() {
       const { data, error } = await supabase.from('bs_events').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      return data || [];
+      return orderEvents(data || []);
     },
     async create(event: any) {
       const { data, error } = await supabase.from('bs_events').insert([event]).select().single();
@@ -45,9 +46,9 @@ export const api = {
   },
   gallery: {
     async list() {
-      const { data, error } = await supabase.from('bs_gallery').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('bs_gallery').select('*,photo_count:bs_gallery_images(count)').order('created_at', { ascending: false });
       if (error) throw error;
-      return data || [];
+      return (data || []).map(({ photo_count, ...collection }) => ({ ...collection, image_count: photo_count?.[0]?.count ?? 0 }));
     },
     async create(item: any) {
       const { data, error } = await supabase.from('bs_gallery').insert([item]).select().single();
@@ -55,7 +56,10 @@ export const api = {
       return data;
     },
     async update(id: string, updates: any) {
-      const { data, error } = await supabase.from('bs_gallery').update(updates).eq('id', id).select().single();
+      // Photo totals come from photo rows; metadata edits must never overwrite them.
+      const metadata = { ...updates };
+      delete metadata.image_count;
+      const { data, error } = await supabase.from('bs_gallery').update(metadata).eq('id', id).select().single();
       if (error) throw error;
       return data;
     },

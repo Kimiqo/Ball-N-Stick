@@ -7,7 +7,7 @@ import { api, uploadImage, uploadImageOrThrow } from '../lib/api';
 type Draft = Omit<GalleryCollection, 'id'>;
 
 const EMPTY: Draft = { name: '', category: '', description: '', image_count: 0, featured: false, image_url: '' };
-const CATEGORIES = ['Youth', 'Events', 'Community', 'Training', 'Schools', 'Matches', 'Media', 'Other'];
+const CATEGORIES = ['WOMA', 'Youth', 'Events', 'Community', 'Training', 'Schools', 'Matches', 'Media', 'Other'];
 
 type UploadJob = { file: File; url?: string; verifySave?: boolean; error?: string };
 
@@ -26,8 +26,6 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
     try {
       const data = await api.galleryImages.list(collectionId);
       setImages(data);
-      // Auto-heal the image count
-      await api.gallery.update(collectionId, { image_count: data.length });
     } catch (e) {
       console.error(e);
     }
@@ -74,7 +72,6 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
       await Promise.all(Array.from({ length: Math.min(3, jobs.length) }, worker));
       const newImages = await api.galleryImages.list(collectionId);
       setImages(newImages);
-      await api.gallery.update(collectionId, { image_count: newImages.length });
       onUpdate();
     } catch {
       setBatchMessage('Uploads have finished, but the photo count could not refresh. Reopen this collection to refresh it.');
@@ -96,7 +93,6 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
       await api.galleryImages.delete(id);
       const remaining = images.filter(img => img.id !== id);
       setImages(remaining);
-      await api.gallery.update(collectionId, { image_count: remaining.length });
       onUpdate();
     } catch (e) {
       console.error(e);
@@ -237,7 +233,7 @@ export default function AdminGallery() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [toast, setToast] = useState('');
 
-  // Fetch gallery list periodically in case image count updates
+  // Read actual photo totals when loading or refreshing collections.
   const fetchGallery = () => {
     api.gallery.list().then(setGallery).catch(console.error);
   };
@@ -259,7 +255,7 @@ export default function AdminGallery() {
   const saveEdit = async () => {
     if (!editing) return;
     try {
-      const { id, created_at, ...updateData } = editing as any;
+      const { id, created_at, image_count, ...updateData } = editing as any;
       await api.gallery.update(editing.id, updateData);
       setGallery(gallery.map(g => g.id === editing.id ? { ...g, ...updateData } as GalleryCollection : g));
       setEditing(null);

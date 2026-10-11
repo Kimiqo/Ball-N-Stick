@@ -21,7 +21,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 }
 
 const PARTNERSHIP_TYPES = [
-  { title: 'Event Sponsorship', desc: 'Associate your brand with Ball & Stick signature events: HITMALL, HYES, HOSS and more.' },
+  { title: 'Event Sponsorship', desc: 'Associate your brand with Ball & Stick signature events: NextGen Hockey Festival, HITMALL, HYES, WOMA and more.' },
   { title: 'Programme Funding', desc: 'Directly fund youth development, officiating, schools, or media programmes.' },
   { title: 'Equipment & In-Kind', desc: 'Supply hockey equipment, facilities, expertise or services.' },
   { title: 'International Bodies', desc: 'Collaborate with B&S Global for international hockey promotion and player development.' },
