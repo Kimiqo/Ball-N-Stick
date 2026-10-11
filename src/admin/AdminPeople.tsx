@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Edit2, X, Check, Mail, Upload } from 'lucide-react';
 import type { TeamMember } from './AdminContext';
 import { api, uploadImage } from '../lib/api';
-import { orderPeople } from '../lib/peoplePresentation';
+import { orderPeople, professionalProfileUrl } from '../lib/peoplePresentation';
 
 type Draft = Omit<TeamMember, 'id'>;
 
@@ -34,6 +34,15 @@ function MemberForm({ data, onChange }: { data: Draft | TeamMember; onChange: (p
         <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Email Address</label>
         <input type="email" className={input} value={data.email} onChange={e => onChange({ email: e.target.value })} placeholder="name@ballandstick.com" />
       </div>
+      <label className="text-xs text-white/60">Public phone number (optional)
+        <input type="tel" className={`${input} mt-1.5`} value={data.phone || ''} onChange={e => onChange({ phone: e.target.value })} placeholder="Contact number" />
+      </label>
+      <label className="sm:col-span-2 text-xs text-white/60">LinkedIn / professional profile URL (optional)
+        <input type="url" className={`${input} mt-1.5`} value={data.linkedin_url || ''} onChange={e => onChange({ linkedin_url: e.target.value })} placeholder="https://www.linkedin.com/in/..." />
+      </label>
+      <label className="sm:col-span-2 text-xs text-white/60">Short biography (optional)
+        <textarea className={`${input} mt-1.5 resize-y`} rows={4} maxLength={1500} value={data.bio || ''} onChange={e => onChange({ bio: e.target.value })} placeholder="Introduce this member and their work at Ball & Stick" />
+      </label>
       <div className="sm:col-span-2">
         <label className="label text-[#F5F7FA]/25 block mb-1.5" style={{ fontSize: '0.58rem' }}>Profile Image</label>
         <div className="flex items-center gap-4">
@@ -61,6 +70,8 @@ export default function AdminPeople() {
 
   const saveEdit = async () => {
     if (!editing) return;
+    if (!editing.role.trim()) { flash('Please enter a role'); return; }
+    if (editing.linkedin_url?.trim() && !professionalProfileUrl(editing.linkedin_url)) { flash('Use a valid HTTPS profile link'); return; }
     try {
       if (editing.id) {
         await api.people.update(editing.id, editing);
@@ -73,8 +84,9 @@ export default function AdminPeople() {
         flash('Team member added');
       }
       setEditing(null);
-    } catch {
-      flash('Error saving team member');
+    } catch (error) {
+      const schemaError = error && typeof error === 'object' && 'code' in error && error.code === 'PGRST204';
+      flash(schemaError ? 'Apply the team profile migration, then try saving again' : 'Error saving team member');
     }
   };
 
@@ -107,7 +119,7 @@ export default function AdminPeople() {
 
       {/* Note */}
       <div className="bg-[#071A3D] border border-white/[0.05] px-4 py-3 mb-5 text-xs text-[#F5F7FA]/30">
-        Organisational structure from the Ball & Stick Ghana corporate profile. Edit to add names as positions are filled. Do not fabricate biographies — full profiles are managed through the CMS when connected.
+        Names, roles, photos and profile details entered here appear on the public People page. Use each member’s approved biography and contact details.
       </div>
 
       {/* Edit form */}
@@ -157,9 +169,7 @@ export default function AdminPeople() {
           >
             <div className="flex items-center gap-5 min-w-0">
               <div className="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center shrink-0">
-                <span className="font-display font-bold text-[#D71920] text-xs">
-                  {member.name ? member.name[0] : '?'}
-                </span>
+                {member.image_url ? <img src={member.image_url} alt={member.name || member.role} className="w-full h-full rounded-full object-cover" /> : <span className="font-display font-bold text-[#D71920] text-xs">{member.name ? member.name[0] : '?'}</span>}
               </div>
               <div className="min-w-0">
                 <div className="font-medium text-[#F5F7FA]/70 text-sm group-hover:text-[#F5F7FA] transition-colors">

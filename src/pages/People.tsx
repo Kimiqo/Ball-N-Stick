@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 import { isCeo } from '../lib/peoplePresentation';
 import type { TeamMember } from '../admin/AdminContext';
+import TeamProfileCard, { ProfileDetails, ProfilePhoto } from '../components/TeamProfileCard';
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -20,6 +21,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 export default function People() {
   const [people, setPeople] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     api.people.list()
@@ -27,12 +29,14 @@ export default function People() {
         setPeople(data);
         setLoading(false);
       })
-      .catch(console.error);
+      .catch(error => { console.error(error); setLoadError(true); setLoading(false); });
   }, []);
 
   if (loading) {
     return <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-white">Loading...</div>;
   }
+
+  if (loadError) return <div className="min-h-screen pt-32 px-5 text-center text-white"><h1 className="font-display text-3xl uppercase">Our People</h1><p className="mt-4">The team profiles could not load. Please try again shortly.</p></div>;
 
   const ceo = people.find(isCeo);
 
@@ -60,37 +64,33 @@ export default function People() {
         </div>
       </section>
 
-      {/* CEO highlight */}
-      <section className="py-16 md:py-20 bg-[#071A3D]">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <Reveal>
-            <div className="relative aspect-[3/4] md:aspect-[4/5] bg-[#0a1e50]">
-              {ceo?.image_url && <img
-                src={ceo.image_url}
-                alt={ceo.name || "Kojo Lumour Ameye"}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071A3D] via-[#071A3D]/20 to-transparent md:hidden" />
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div>
-              <div className="label text-[#D71920] mb-3">{ceo?.role || "Founder & CEO"}</div>
-              <h2 className="font-display font-black uppercase text-[#F5F7FA] leading-[0.9] mb-2" style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}>
-                {ceo?.name || "Kojo Lumour Ameye"}
-              </h2>
-              {ceo?.email && (
-                <a href={`mailto:${ceo.email}`} className="label text-[#F5F7FA]/35 hover:text-[#D71920] transition-colors">
-                  {ceo.email}
-                </a>
-              )}
-              <div className="divider my-6" />
-              <p className="text-[#F5F7FA]/50 text-sm leading-relaxed">
-                Ball &amp; Stick Ghana was founded with a passion for excellence in the Field Hockey fraternity and an ambition to grow the sport across Africa.
-              </p>
-            </div>
-          </Reveal>
+      {/* CEO leads the team */}
+      {ceo && (
+        <section id={`member-${ceo.id}`} className="py-12 md:py-16 bg-[#071A3D] scroll-mt-28">
+          <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <Reveal>
+              <div className="aspect-[4/5] max-h-[600px] overflow-hidden bg-[#0a1e50]"><ProfilePhoto member={ceo} /></div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="label text-[#D71920] mb-4">{ceo.role}</div>
+              <h2 className="font-display font-black uppercase text-white leading-tight mb-6" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>{ceo.name?.trim() || 'Name to be confirmed'}</h2>
+              <div className="divider mb-6" />
+              <ProfileDetails member={ceo} />
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Identifiable profiles for the full team */}
+      <section className="py-16 md:py-20">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
+          <Reveal><div className="label text-[#D71920] mb-3">The Ball &amp; Stick Ghana Team</div><h2 className="font-display font-black uppercase text-white text-3xl md:text-5xl mb-10">Meet Our People</h2></Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {people.filter(member => member.id !== ceo?.id).map((member, index) => (
+              <Reveal key={member.id} delay={Math.min(index * 0.05, 0.25)}><TeamProfileCard member={member} /></Reveal>
+            ))}
+          </div>
+          {people.length === 0 && <p className="text-white/60">Team profiles will be added soon.</p>}
         </div>
       </section>
 
@@ -103,7 +103,7 @@ export default function People() {
           <div className="flex flex-col border-t border-white/[0.05]">
             {people.map((pos, i) => (
               <motion.div
-                key={pos.role}
+                key={pos.id}
                 className="flex flex-col sm:flex-row sm:items-center justify-between py-5 border-b border-white/[0.05] gap-2 group"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -139,28 +139,6 @@ export default function People() {
         </div>
       </section>
 
-      {/* Team photos */}
-      <section className="py-12 pb-20 bg-[#071A3D]">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-16">
-          <Reveal>
-            <div className="label text-[#F5F7FA]/20 mb-8">The Ball &amp; Stick Ghana Team</div>
-          </Reveal>
-          <div className="grid grid-cols-3 gap-2">
-            {(people.filter(p => p.image_url && p.id !== ceo?.id).map(p => p.image_url as string).slice(0, 3)).concat(['', '', '']).slice(0, 3).map((src, i) => (
-              <motion.div
-                key={i}
-                className="aspect-[3/4] overflow-hidden bg-[#0a1e50]"
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                {src && <img src={src} alt="Team member" className="w-full h-full object-cover" loading="lazy" />}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </motion.div>
   );
 }

@@ -56,6 +56,9 @@ export type Partner = {
 };
 
 export type TeamMember = {
+  bio?: string;
+  phone?: string;
+  linkedin_url?: string;
   id: string;
   role: string;
   name: string;
