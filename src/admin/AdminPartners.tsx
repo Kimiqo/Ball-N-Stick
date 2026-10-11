@@ -3,10 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Check, AlertTriangle, Upload } from 'lucide-react';
 import type { Partner } from './AdminContext';
 import { api, uploadImage } from '../lib/api';
+import { alphabetisePartners } from '../lib/partnerPresentation';
 
 type Draft = Omit<Partner, 'id'>;
 
 const EMPTY: Draft = { category: 'partner', name: '', type: '', website: '', description: '', image_url: '' };
+
+const GROUPS = [
+  { category: 'partner', title: 'Official Partners' },
+  { category: 'sponsor', title: 'Corporate Sponsors' },
+  { category: 'school', title: 'School Partners' },
+] as const;
 
 const TYPES = ['Technical Partner', 'Equipment Partner', 'Title Sponsor', 'Event Sponsor', 'Media Partner', 'Strategic Partner', 'School Partner', 'Sponsor', 'Other'];
 
@@ -200,9 +207,21 @@ export default function AdminPartners() {
         )}
       </AnimatePresence>
 
-      {/* Partner cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {partners.map(partner => (
+      {/* Partner groups */}
+      <div className="space-y-10">
+        {GROUPS.map(group => {
+          const members = alphabetisePartners(partners.filter(partner => (partner.category || 'partner') === group.category));
+          return (
+            <section key={group.category} aria-labelledby={`partners-${group.category}`}>
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-white/10 pb-3">
+                <h2 id={`partners-${group.category}`} className="font-display font-bold uppercase text-[#F5F7FA] text-xl">{group.title} <span className="text-white/40 text-sm">({members.length})</span></h2>
+                <button type="button" onClick={() => { setCreating(true); setEditing(null); setDraft({ ...EMPTY, category: group.category }); }} className="flex items-center gap-2 text-xs text-[#F5F7FA]/60 hover:text-white">
+                  <Plus size={13} /> Add {group.category === 'school' ? 'School' : group.category === 'sponsor' ? 'Sponsor' : 'Partner'}
+                </button>
+              </div>
+              {members.length === 0 && <p className="text-sm text-white/40">No {group.title.toLowerCase()} added yet.</p>}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {members.map(partner => (
           <motion.div
             key={partner.id}
             className="bg-[#071A3D] border border-white/[0.05] p-6 hover:border-white/10 transition-colors"
@@ -211,7 +230,7 @@ export default function AdminPartners() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h2 className="font-display font-black uppercase text-[#F5F7FA] text-lg leading-none mb-1">{partner.name}</h2>
-                <div className="label text-[#D71920]" style={{ fontSize: '0.58rem' }}>{partner.category || 'partner'} · {partner.type}</div>
+                <div className="label text-[#D71920]" style={{ fontSize: '0.58rem' }}>{partner.type}</div>
               </div>
               <div className="flex items-center gap-2 ml-4">
                 <button onClick={() => { setEditing(partner); setCreating(false); }} className="text-[#F5F7FA]/25 hover:text-[#F5F7FA] transition-colors">
@@ -245,6 +264,10 @@ export default function AdminPartners() {
             )}
           </motion.div>
         ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </motion.div>
   );

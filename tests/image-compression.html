@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Image compression checks</title>
+<h1>Image compression checks</h1><pre id="results">Running…</pre>
+<script type="module">
+import { compressImage, MAX_UPLOAD_BYTES } from '/src/lib/compressImage.ts';
+const results = [];
+const check = (condition, message) => { if (!condition) throw new Error(message); results.push('PASS: ' + message); };
+const canvasBlob = canvas => new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+try {
+  const canvas = document.createElement('canvas'); canvas.width = 4000; canvas.height = 2000;
+  const ctx = canvas.getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 4000, 2000); gradient.addColorStop(0, 'red'); gradient.addColorStop(1, 'blue');
+  ctx.fillStyle = gradient; ctx.fillRect(0, 0, 4000, 2000);
+  const source = new File([await canvasBlob(canvas)], 'large.png', {type:'image/png'});
+  const result = await compressImage(source);
+  const bitmap = await createImageBitmap(result);
+  check(result.size <= MAX_UPLOAD_BYTES && result.size <= source.size, 'Stored image is bounded and never larger than source');
+  check(bitmap.width === 1920 && bitmap.height === 960, 'Large raster resizes proportionally to 1920px'); bitmap.close();
+  results.push(`Large PNG: ${source.size} → ${result.size} bytes (${result.type})`);
+  canvas.width = 100; canvas.height = 100; ctx.clearRect(0,0,100,100); ctx.fillStyle='red'; ctx.fillRect(20,20,50,50);
+  const transparent = await compressImage(new File([await canvasBlob(canvas)], 'transparent.png', {type:'image/png'}));
+  const decoded = await createImageBitmap(transparent); ctx.clearRect(0,0,100,100); ctx.drawImage(decoded,0,0);
+  check(ctx.getImageData(0,0,1,1).data[3] === 0, 'Transparency preserved'); decoded.close();
+  const svg = new File(['<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>'], 'logo.svg', {type:'image/svg+xml'});
+  check(await compressImage(svg) === svg, 'Small SVG preserved');
+  for (const file of [new File([], 'empty.jpg', {type:'image/jpeg'}), new File(['bad'], 'bad.jpg', {type:'image/jpeg'}), new File(['data'], 'photo.heic', {type:'image/heic'}), new File([new Uint8Array(MAX_UPLOAD_BYTES+1)], 'large.gif', {type:'image/gif'})]) {
+    let rejected = false; try { await compressImage(file); } catch { rejected=true; }
+    check(rejected, `Reject ${file.name} without uploading original`);
+  }
+  const photo = new File([await (await fetch('/events/nextgen-hockey-festival-2026.jpeg')).blob()], 'flyer.jpeg', {type:'image/jpeg'});
+  const compressedPhoto = await compressImage(photo);
+  check(compressedPhoto.size <= photo.size, 'Actual flyer does not grow');
+  results.push(`Flyer: ${photo.size} → ${compressedPhoto.size} bytes`);
+  document.querySelector('#results').textContent = results.join('\n') + '\nALL CHECKS PASSED';
+} catch(error) { document.querySelector('#results').textContent = results.join('\n') + '\nFAILED: ' + error.message; }
+</script></html>

@@ -1,0 +1,452 @@
+{
+  "storefront_slug": "ball-and-stick-shop",
+  "products": [
+    {
+      "paystack": {
+        "name": "Harrow Hockey Stick",
+        "description": "Harrow field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Harrow",
+        "model": null,
+        "image_source_page": "https://www.harrowsports.com/collections/field-hockey/products/wildstar-c-field-hockey-stick",
+        "image_file": "output/shop-images/Harrow/Wildstar-C__01.png",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Harrow/Wildstar-C__01.png",
+          "output/shop-images/Harrow/Wildstar-C__02.png",
+          "output/shop-images/Harrow/Wildstar-C__03.png"
+        ],
+        "reference_models": [
+          "Wildstar-C"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Inside Hockey Stick",
+        "description": "Inside Hockey field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Inside Hockey",
+        "model": null,
+        "image_source_page": "https://www.insidehockey.co.nz/shop",
+        "image_file": "output/shop-images/Inside-Hockey/Shadow-lifestyle__01.png",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Inside-Hockey/Shadow-lifestyle__01.png",
+          "output/shop-images/Inside-Hockey/Shadow-lifestyle__02.jpg",
+          "output/shop-images/Inside-Hockey/Shadow-lifestyle__03.jpg"
+        ],
+        "reference_models": [
+          "Shadow-lifestyle"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Crow Hockey Stick",
+        "description": "Crow field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Crow",
+        "model": null,
+        "image_source_page": "https://crowhockey.com/shop/elite-series-extreme-low-bow/",
+        "image_file": "output/shop-images/Crow/Elite-Extreme-Low-Bow__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Crow/Elite-Extreme-Low-Bow__01.jpg",
+          "output/shop-images/Crow/Elite-Extreme-Low-Bow__02.jpg",
+          "output/shop-images/Crow/Elite-Extreme-Low-Bow__03.jpg",
+          "output/shop-images/Crow/Elite-Extreme-Low-Bow__04.jpg"
+        ],
+        "reference_models": [
+          "Elite-Extreme-Low-Bow"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "SKT Hockey Stick",
+        "description": "SKT field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "SKT",
+        "model": null,
+        "image_source_page": "Provided by user",
+        "image_file": "output/shop-images/SKT/User-provided-reference__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided. No reliable matching brand/product image located. Confirm spelling; do not substitute STX or TK.",
+        "image_files": [
+          "output/shop-images/SKT/User-provided-reference__01.jpg",
+          "output/shop-images/SKT/Purple-37.5-reference__01.jpg",
+          "output/shop-images/SKT/Purple-37.5-reference__02.jpg"
+        ],
+        "reference_models": [
+          "User-provided-reference",
+          "Purple-37.5-reference"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Rival Hockey Stick",
+        "description": "Rival field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Rival",
+        "model": null,
+        "image_source_page": "https://www.carousell.com.my/p/rival-dr-95-field-hockey-stick-95-japanese-carbon-36-5-37-5-38-5-kayu-hoki-rival-1246157055/",
+        "image_file": "output/shop-images/Rival/DR95-colour-references__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Rival/DR95-colour-references__01.jpg",
+          "output/shop-images/Rival/DR95-colour-references__02.jpg",
+          "output/shop-images/Rival/DR95-colour-references__03.jpg"
+        ],
+        "reference_models": [
+          "DR95-colour-references"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Raccoon Hockey Stick",
+        "description": "Raccoon field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Raccoon",
+        "model": null,
+        "image_source_page": "https://raccoon.ar/producto/palo-fifty-silver-s26-r023/",
+        "image_file": "output/shop-images/Raccoon/Fifty-Silver-S26__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Raccoon/Fifty-Silver-S26__01.jpg",
+          "output/shop-images/Raccoon/Fifty-Silver-S26__02.jpg",
+          "output/shop-images/Raccoon/Fifty-Silver-S26__03.jpg",
+          "output/shop-images/Raccoon/Fifty-Silver-S26__04.jpg"
+        ],
+        "reference_models": [
+          "Fifty-Silver-S26"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "HACA Hockey Stick",
+        "description": "HACA field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "HACA",
+        "model": null,
+        "image_source_page": "https://gsports.ie/products/haca-h10-5-pro-edition-6k-elb-hockey-stick",
+        "image_file": "output/shop-images/HACA/H10.5-Pro-Edition__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided. Retailer reference; exact model not confirmed.",
+        "image_files": [
+          "output/shop-images/HACA/H10.5-Pro-Edition__01.jpg",
+          "output/shop-images/HACA/H10.5-Pro-Edition__02.jpg",
+          "output/shop-images/HACA/H10.5-Pro-Edition__03.jpg",
+          "output/shop-images/HACA/H10.5-Pro-Edition__04.jpg"
+        ],
+        "reference_models": [
+          "H10.5-Pro-Edition"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "VERA Hockey Stick",
+        "description": "VERA field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "VERA",
+        "model": null,
+        "image_source_page": null,
+        "image_file": null,
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided. No reliable matching brand/product image located. Confirm spelling; do not substitute STX or TK.",
+        "image_files": []
+      }
+    },
+    {
+      "paystack": {
+        "name": "Sons Hockey Stick",
+        "description": "Sons field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Sons",
+        "model": null,
+        "image_source_page": "https://www.sons.com.ar/productos/oreon-75-carbono-azul/",
+        "image_file": "output/shop-images/Sons/Oreon-75-Blue__01.webp",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Sons/Oreon-75-Blue__01.webp",
+          "output/shop-images/Sons/Oreon-75-Blue__02.webp",
+          "output/shop-images/Sons/Oreon-75-Blue__03.webp",
+          "output/shop-images/Sons/Oreon-75-Blue__04.webp"
+        ],
+        "reference_models": [
+          "Oreon-75-Blue"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Identity Hockey Stick",
+        "description": "Identity field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Identity",
+        "model": null,
+        "image_source_page": "https://identityhockey.nl/producten/sticks",
+        "image_file": "output/shop-images/Identity/Stick-in-use-model-unconfirmed__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Identity/Stick-in-use-model-unconfirmed__01.jpg",
+          "output/shop-images/Identity/Stick-in-use-model-unconfirmed__02.jpg",
+          "output/shop-images/Identity/Stick-in-use-model-unconfirmed__03.jpg",
+          "output/shop-images/Identity/Stick-in-use-model-unconfirmed__04.jpg"
+        ],
+        "reference_models": [
+          "Stick-in-use-model-unconfirmed"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Lekker Hockey Stick",
+        "description": "Lekker field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Lekker",
+        "model": null,
+        "image_source_page": "https://www.lekkerhockey.nl/product-page/shadow",
+        "image_file": "output/shop-images/Lekker/Shadow__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Lekker/Shadow__01.jpg",
+          "output/shop-images/Lekker/Shadow__02.jpg",
+          "output/shop-images/Lekker/Shadow__03.jpg",
+          "output/shop-images/Lekker/Shadow__04.jpg"
+        ],
+        "reference_models": [
+          "Shadow"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Parda Hockey Stick",
+        "description": "Parda field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Parda",
+        "model": null,
+        "image_source_page": "https://www.jabhockey.com.ar/productos/parda-creative-playmaker-95-carbono/",
+        "image_file": "output/shop-images/Parda/Creative-Playmaker__01.webp",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Parda/Creative-Playmaker__01.webp",
+          "output/shop-images/Parda/Creative-Playmaker__02.webp",
+          "output/shop-images/Parda/Creative-Playmaker__03.webp",
+          "output/shop-images/Parda/Creative-Playmaker__04.webp"
+        ],
+        "reference_models": [
+          "Creative-Playmaker"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Y1 Hockey Stick",
+        "description": "Y1 field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Y1",
+        "model": null,
+        "image_source_page": "https://y1sport.com/products/ylb-x-2026",
+        "image_file": "output/shop-images/Y1/YLB-X__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Y1/YLB-X__01.jpg",
+          "output/shop-images/Y1/YLB-X__02.jpg",
+          "output/shop-images/Y1/YLB-X__03.jpg",
+          "output/shop-images/Y1/YLB-X__04.jpg"
+        ],
+        "reference_models": [
+          "YLB-X"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Paradox (Voodoo) Hockey Stick",
+        "description": "Paradox (Voodoo) field hockey stick, available from Ball & Stick. Contact us to confirm the available model and length before ordering.",
+        "price": 100000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "brand": "Paradox (Voodoo)",
+        "model": null,
+        "image_source_page": "https://www.voodooamerica.com/product-page/voodoo-paradox-e4-indoor-field-hockey-stick",
+        "image_file": "output/shop-images/Voodoo-Paradox/E4-Indoor__01.jpg",
+        "note": "Exact model, length and photo not supplied. Brand spelling retained as provided.",
+        "image_files": [
+          "output/shop-images/Voodoo-Paradox/E4-Indoor__01.jpg",
+          "output/shop-images/Voodoo-Paradox/E4-Indoor__02.jpg",
+          "output/shop-images/Voodoo-Paradox/E4-Indoor__03.jpg",
+          "output/shop-images/Voodoo-Paradox/E4-Indoor__04.jpg"
+        ],
+        "reference_models": [
+          "E4-Indoor"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Training Cone - 3 inch",
+        "description": "3-inch training cone for marking drills and practice areas. Available from Ball & Stick.",
+        "price": 25000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "image_source_page": "https://www.walmart.com/ip/50-Pack-Mini-Cones-for-Classroom-Small-Sports-Markers-for-Soccer-Playground-Orange-3-in/985108429",
+        "image_file": "output/shop-images/Training-Cone-3-inch/Mini-orange-reference__01.jpg",
+        "note": "Default price is GHS 250 per listing. Confirm whether sold individually or as a pack.",
+        "image_files": [
+          "output/shop-images/Training-Cone-3-inch/Mini-orange-reference__01.jpg",
+          "output/shop-images/Training-Cone-3-inch/Mini-orange-reference__02.jpg",
+          "output/shop-images/Training-Cone-3-inch/Mini-orange-reference__03.jpg"
+        ],
+        "reference_models": [
+          "Mini-orange-reference"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Training Cone - 6 inch",
+        "description": "6-inch training cone for marking drills and practice areas. Available from Ball & Stick.",
+        "price": 25000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "image_source_page": "https://a77sports.com/public/products-details/6-inch-training-cone",
+        "image_file": "output/shop-images/Training-Cone-6-inch/ALM-Sports__01.png",
+        "note": "Default price is GHS 250 per listing. Confirm whether sold individually or as a pack.",
+        "image_files": [
+          "output/shop-images/Training-Cone-6-inch/ALM-Sports__01.png",
+          "output/shop-images/Training-Cone-6-inch/ALM-Sports__02.png",
+          "output/shop-images/Training-Cone-6-inch/ALM-Sports__03.png"
+        ],
+        "reference_models": [
+          "ALM-Sports"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Training Cone - 9 inch",
+        "description": "9-inch training cone for marking drills and practice areas. Available from Ball & Stick.",
+        "price": 25000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "image_source_page": "https://quickplaysport.us/products/slotted-cones-10",
+        "image_file": "output/shop-images/Training-Cone-9-inch/Quickplay-collapsible-reference__01.jpg",
+        "note": "Default price is GHS 250 per listing. Confirm whether sold individually or as a pack.",
+        "image_files": [
+          "output/shop-images/Training-Cone-9-inch/Quickplay-collapsible-reference__01.jpg",
+          "output/shop-images/Training-Cone-9-inch/Quickplay-collapsible-reference__02.jpg",
+          "output/shop-images/Training-Cone-9-inch/Quickplay-collapsible-reference__03.jpg",
+          "output/shop-images/Training-Cone-9-inch/Quickplay-collapsible-reference__04.jpg"
+        ],
+        "reference_models": [
+          "Quickplay-collapsible-reference"
+        ]
+      }
+    },
+    {
+      "paystack": {
+        "name": "Training Bibs",
+        "description": "Training bibs for identifying players and teams during practice. Contact Ball & Stick to confirm available sizes, colours and pack quantities.",
+        "price": 25000,
+        "currency": "GHS",
+        "unlimited": false,
+        "quantity": 10
+      },
+      "review": {
+        "image_source_page": "https://childrensfootball.com/products/mesh-training-bib",
+        "image_file": "output/shop-images/Training-Bibs/Mesh-colour-references__01.jpg",
+        "note": "Confirm whether GHS 250 covers one bib or a pack. No size, colour or material assumed.",
+        "image_files": [
+          "output/shop-images/Training-Bibs/Mesh-colour-references__01.jpg",
+          "output/shop-images/Training-Bibs/Mesh-colour-references__02.jpg",
+          "output/shop-images/Training-Bibs/Mesh-colour-references__03.jpg",
+          "output/shop-images/Training-Bibs/Mesh-colour-references__04.jpg"
+        ],
+        "reference_models": [
+          "Mesh-colour-references"
+        ]
+      }
+    }
+  ]
+}

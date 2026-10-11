@@ -1,18 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Check, Star, ImageIcon, Upload, Loader2 } from 'lucide-react';
 import type { GalleryCollection } from './AdminContext';
-import { api, uploadImage } from '../lib/api';
+import { api, uploadImage, uploadImageOrThrow } from '../lib/api';
 
 type Draft = Omit<GalleryCollection, 'id'>;
 
 const EMPTY: Draft = { name: '', category: '', description: '', image_count: 0, featured: false, image_url: '' };
 const CATEGORIES = ['Youth', 'Events', 'Community', 'Training', 'Schools', 'Matches', 'Media', 'Other'];
 
+type UploadJob = { file: File; url?: string; verifySave?: boolean; error?: string };
+
 function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpdate: () => void }) {
   const [images, setImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const busy = useRef(false);
+  const [progress, setProgress] = useState({ total: 0, completed: 0, uploaded: 0 });
+  const [failed, setFailed] = useState<UploadJob[]>([]);
+  const [batchMessage, setBatchMessage] = useState('');
+
 
   const fetchImages = async () => {
     setLoading(true);
@@ -31,24 +38,57 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
     fetchImages();
   }, [collectionId]);
 
+  const runUploads = async (jobs: UploadJob[]) => {
+    if (busy.current || !jobs.length) return;
+    busy.current = true;
+    setUploading(true);
+    setFailed([]);
+    setBatchMessage('');
+    setProgress({ total: jobs.length, completed: 0, uploaded: 0 });
+    const failures: UploadJob[] = [];
+    let cursor = 0;
+    const worker = async () => {
+      while (cursor < jobs.length) {
+        const job = jobs[cursor++];
+        let success = false;
+        try {
+          job.url ??= await uploadImageOrThrow(job.file);
+          // If the previous save failed after reaching the server, reconcile before retrying.
+          const existing = job.verifySave
+            ? (await api.galleryImages.list(collectionId)).find(photo => photo.image_url === job.url)
+            : undefined;
+          job.verifySave = true;
+          const photo = existing ?? await api.galleryImages.create(collectionId, job.url);
+          job.verifySave = false;
+          setImages(current => current.some(image => image.id === photo.id) ? current : [...current, photo]);
+          success = true;
+        } catch (error) {
+          job.error = error && typeof error === 'object' && 'message' in error ? String(error.message) : 'Upload failed. Check your connection and try again.';
+          failures.push(job);
+        } finally {
+          setProgress(current => ({ ...current, completed: current.completed + 1, uploaded: current.uploaded + Number(success) }));
+        }
+      }
+    };
+    try {
+      await Promise.all(Array.from({ length: Math.min(3, jobs.length) }, worker));
+      const newImages = await api.galleryImages.list(collectionId);
+      setImages(newImages);
+      await api.gallery.update(collectionId, { image_count: newImages.length });
+      onUpdate();
+    } catch {
+      setBatchMessage('Uploads have finished, but the photo count could not refresh. Reopen this collection to refresh it.');
+    } finally {
+      setFailed(failures);
+      setUploading(false);
+      busy.current = false;
+    }
+  };
+
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-    
-    setUploading(true);
-    let uploadedCount = 0;
-    for (const file of files) {
-      const url = await uploadImage(file);
-      if (url) {
-        await api.galleryImages.create(collectionId, url);
-        uploadedCount++;
-      }
-    }
-    const newImages = await api.galleryImages.list(collectionId);
-    setImages(newImages);
-    await api.gallery.update(collectionId, { image_count: newImages.length });
-    onUpdate();
-    setUploading(false);
+    e.target.value = '';
+    await runUploads(files.map(file => ({ file })));
   };
 
   const handleDelete = async (id: string) => {
@@ -74,6 +114,23 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
         </label>
       </div>
 
+      {progress.total > 0 && (
+        <div className="mb-4 text-xs text-[#F5F7FA]/60" role="status" aria-live="polite">
+          {uploading ? 'Processing' : 'Finished'} {progress.completed} / {progress.total} · {progress.uploaded} uploaded{failed.length > 0 ? ` · ${failed.length} failed` : ''}
+          <progress className="w-full h-2 mt-2 accent-[#D71920]" value={progress.completed} max={progress.total} aria-label="Image upload progress" />
+          {uploading && <p className="mt-1">Keep this page open. Up to three images are compressed and uploaded at a time.</p>}
+        </div>
+      )}
+      {failed.length > 0 && !uploading && (
+        <div className="mb-4 border border-red-400/20 p-3 text-xs text-red-300">
+          <button type="button" onClick={() => runUploads(failed)} className="mb-2 underline">Retry {failed.length} failed image{failed.length === 1 ? '' : 's'}</button>
+          <ul className="max-h-32 overflow-y-auto space-y-1">
+            {failed.map((job, index) => <li key={index}>{job.file.name}: {job.error}</li>)}
+          </ul>
+        </div>
+      )}
+      {batchMessage && <p className="mb-4 text-xs text-amber-300" role="status">{batchMessage}</p>}
+
       {loading ? (
         <div className="text-xs text-[#F5F7FA]/30 py-4">Loading photos...</div>
       ) : images.length === 0 ? (
@@ -84,6 +141,7 @@ function ImageManager({ collectionId, onUpdate }: { collectionId: string, onUpda
             <div key={img.id} className="relative aspect-square group bg-[#020B1C] border border-white/10">
               <img src={img.image_url} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
               <button 
+                disabled={uploading}
                 onClick={() => handleDelete(img.id)}
                 className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-500 text-white p-1 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"
               >

@@ -10,11 +10,38 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-tests
+*.tsbuildinfo
+.vite/
+.cache/
+
+# Test source stays tracked; generated results do not
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+# Generated downloads, image galleries and export archives
+/output/
+# Local maintenance scripts stay on this computer
+/scripts/
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local credentials; keep the shareable configuration template
 .env
 .env.*
+!.env.example
 *.local
-tmp/storage-reset/
+/tmp/
+
+# Local deployment and Supabase CLI state (keep migrations tracked)
+.vercel/
+.netlify/
+/supabase/.temp/
+/supabase/.branches/
 
 # Editor directories and files
 .vscode/*

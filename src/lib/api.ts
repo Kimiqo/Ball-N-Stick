@@ -1,15 +1,18 @@
 import { compressImage } from './compressImage';
 import { supabase } from './supabase';
 
+export async function uploadImageOrThrow(file: File): Promise<string> {
+  const compressed = await compressImage(file);
+  const extensions: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/svg+xml': 'svg' };
+  const fileName = `${crypto.randomUUID()}.${extensions[compressed.type]}`;
+  const { error } = await supabase.storage.from('bs-images').upload(fileName, compressed, { contentType: compressed.type });
+  if (error) throw error;
+  return supabase.storage.from('bs-images').getPublicUrl(fileName).data.publicUrl;
+}
+
 export async function uploadImage(file: File): Promise<string | null> {
   try {
-    const compressed = await compressImage(file);
-    const extensions: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/svg+xml': 'svg' };
-    const fileName = `${crypto.randomUUID()}.${extensions[compressed.type]}`;
-    const { error } = await supabase.storage.from('bs-images').upload(fileName, compressed, { contentType: compressed.type });
-    if (error) throw error;
-    const { data } = supabase.storage.from('bs-images').getPublicUrl(fileName);
-    return data.publicUrl;
+    return await uploadImageOrThrow(file);
   } catch (error) {
     console.error('Error uploading image:', error);
     const message = error instanceof Error ? error.message : 'Image upload failed. Check your storage permissions and quota, then try again.';

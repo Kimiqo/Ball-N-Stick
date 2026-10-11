@@ -1,0 +1,8 @@
+{
+  "name": "Training Bibs",
+  "description": "Training bibs for identifying players and teams during practice. Contact Ball & Stick to confirm available sizes, colours and pack quantities.",
+  "price": 25000,
+  "currency": "GHS",
+  "unlimited": false,
+  "quantity": 10
+}
